@@ -15,9 +15,11 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
     }
+
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
@@ -39,6 +41,7 @@ public class CommentService {
         }).orElse(null);
     }
 
+
     public boolean deleteComment(Long id) {
         if (commentRepository.existsById(id)) {
             commentRepository.deleteById(id);
@@ -46,4 +49,5 @@ public class CommentService {
         }
         return false;
     }
+
 }
