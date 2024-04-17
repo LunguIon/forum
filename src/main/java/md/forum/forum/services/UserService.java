@@ -27,6 +27,7 @@ public class UserService {
         }
     }
 
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -86,7 +87,6 @@ public class UserService {
         }
         return false;
     }
-
 
     public boolean deleteUser(String email) {
         if (userRepository.existsByEmail(email)) {
