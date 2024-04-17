@@ -22,6 +22,12 @@ public class PostController {
         List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable String email) {
+        List<Post> posts = postService.getPostsByUserName(email);
+        return ResponseEntity.ok(posts);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
