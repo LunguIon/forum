@@ -17,7 +17,6 @@ public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column
     private boolean upvote;
     @Column(name = "create_date")
