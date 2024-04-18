@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.sql.Date;
 
+
 @Entity(name = "posts")
 @Getter
 @Setter
@@ -32,6 +33,8 @@ public class Post {
     private Date updateDate;
 
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "fk_post_user"))
-    @ManyToOne //treba de concretizat cate ceva
+    @ManyToOne
     private User user;
+
+  //  private Set<Like> likes;
 }

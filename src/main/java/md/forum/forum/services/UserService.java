@@ -33,20 +33,57 @@ public class UserService {
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-    public User updateUser(String email, User newUser) {
-        //need a meeting to talk about update
+    public User updateUserPassword(String email, String password) {
+        return userRepository.findByEmail(email).map(user->{
+            user.setPasswordHash(password);
+            return userRepository.save(user);
+        }).orElse(null);
+    }
+    public User banUser(String email) {
         return userRepository.findByEmail(email).map(user -> {
-            user.setUsername(newUser.getUsername());
-            //idk what about 'email'
-            user.setPasswordHash(newUser.getPasswordHash());
-            user.setImageUrlProfile(newUser.getImageUrlProfile());
-            user.setBanned(newUser.isBanned());
-            //i also don't know about 'role'
+            user.setBanned(true);
             return userRepository.save(user);
         }).orElse(null);
     }
 
-    // Delete operation
+    //firstly need to create Authentication
+    public boolean checkPassword(User user, String password) {
+        return false;
+    }
+    public User updateUserProfile(String email, User newUser) {
+        return userRepository.findByEmail(email).map(user -> {
+            user.setUsername(newUser.getUsername());
+            user.setImageUrlProfile(newUser.getImageUrlProfile());
+            return userRepository.save(user);
+        }).orElse(null);
+    }
+    public boolean updateUserUsername(String email, String newUsername) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user != null) {
+            if(newUsername != null) {
+                user.setUsername(newUsername);
+                userRepository.save(user);
+                return true;
+            }
+            return false;
+        }
+        return false;
+
+    }
+    public boolean updateUserProfileImage(String email, String newImageUrl) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user != null) {
+            if(newImageUrl != null) {
+                user.setImageUrlProfile(newImageUrl);
+                userRepository.save(user);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+
     public boolean deleteUser(String email) {
         if (userRepository.existsByEmail(email)) {
             userRepository.deleteByEmail(email);
