@@ -1,18 +1,20 @@
 package md.forum.forum;
 
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.logging.Logger;
+
 
 @SpringBootApplication
 public class ForumApplication {
 
-	static Logger logger = Logger.getLogger(ForumApplication.class.getName());
+	private static final Logger logger = LogManager.getLogger(ForumApplication.class);
 
 	public static void main(String[] args) {
 		logger.info("App starts");
+		logger.info("App startedfsfafsf");
 		SpringApplication.run(ForumApplication.class, args);
 		logger.info("App ends");
 	}
