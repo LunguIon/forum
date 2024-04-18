@@ -13,10 +13,8 @@ public class ForumApplication {
 	private static final Logger logger = LogManager.getLogger(ForumApplication.class);
 
 	public static void main(String[] args) {
-		logger.info("App starts");
-		logger.info("App startedfsfafsf");
+		logger.info("App started");
 		SpringApplication.run(ForumApplication.class, args);
-		logger.info("App ends");
 	}
 
 }
