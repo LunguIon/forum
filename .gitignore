@@ -35,4 +35,4 @@ build/
 ### other ###
 .script.sql.swp
 
-
+/logs
