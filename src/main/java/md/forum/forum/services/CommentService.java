@@ -36,7 +36,6 @@ public class CommentService {
         }).orElse(null);
     }
 
-
     public boolean deleteComment(Long id) {
         if (commentRepository.existsById(id)) {
             commentRepository.deleteById(id);
@@ -44,5 +43,4 @@ public class CommentService {
         }
         return false;
     }
-
 }
