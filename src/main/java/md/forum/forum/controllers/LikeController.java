@@ -7,9 +7,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("/likes")
 public class LikeController {
     private final LikeService likeService;
     Logger logger = LogManager.getLogger(LikeController.class);
@@ -17,6 +20,18 @@ public class LikeController {
     public LikeController(LikeService likeService) {
         this.likeService = likeService;
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Like>> getAllLikes() {
+        logger.info("Get all likes");
+        List<Like> likes = likeService.findAll();
+        if (likes.isEmpty()) {
+            logger.info("No likes found");
+            return ResponseEntity.notFound().build();
+        }
+        logger.info("Found {} likes", likes.size());
+        return ResponseEntity.ok(likes);
     }
 
     // Endpoint to find all likes by a specific user
