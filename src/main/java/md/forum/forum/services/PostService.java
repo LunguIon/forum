@@ -1,6 +1,7 @@
 package md.forum.forum.services;
 
 
+
 import md.forum.forum.models.Post;
 import md.forum.forum.repositorys.PostRepository;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,8 @@ public class PostService {
     public Optional<Post> getPostById(Long id) {
         return postRepository.findById(id);
     }
-    public List<Post> getPostsByUserName(String userName) {
-        return postRepository.findAllByUser(userService.getUserByUsername(userName).orElseThrow());
+    public List<Post> getPostsByUserName(String email) {
+        return postRepository.findAllByUser(userService.getUserByEmail(email).orElseThrow());
     }
 
     public Post updatePost(Long id, Post newPost) {
@@ -57,6 +58,7 @@ public class PostService {
         }
         return false;
     }
+
 
 
 }

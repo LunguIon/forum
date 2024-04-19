@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### other ###
+.script.sql.swp
+
+/logs

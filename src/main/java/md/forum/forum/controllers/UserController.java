@@ -2,6 +2,8 @@ package md.forum.forum.controllers;
 
 import md.forum.forum.models.User;
 import md.forum.forum.services.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,37 +12,110 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private static final Logger logger = LogManager.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
+        logger.info("UserController was initialized");
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
+        logger.info("getAllUsers was called");
         List<User> users = userService.getAllUsers();
+        logger.info("getAllUsers returned {} users", users.size());
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<User> getUserById(@PathVariable String email) {
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        logger.info("getUserByEmail called for email: {}", email);
         return userService.getUserByEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(user -> {
+                    logger.info("User found with email: {}", user.getEmail());
+                    return ResponseEntity.ok(user);
+                })
+                .orElseGet(() -> {
+                    logger.error("User not found with email: {}", email);
+                    return ResponseEntity.notFound().build();
+                });
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        if(createdUser == null) {
+            logger.error("User creation failed: {}", user.getEmail());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }else {
+            logger.info("User created: {}", createdUser.getEmail());
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        }
+
+
     }
 
+    //don't use it !!!!!! for frontend
     @PutMapping("/{email}")
     public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User user) {
-        User updatedUser = userService.updateUser(email, user);
+        User updatedUser = userService.updateUserProfile(email, user);
         if (updatedUser != null) {
+            logger.info("User updated: {}", updatedUser.getEmail());
             return ResponseEntity.ok(updatedUser);
         } else {
+            logger.error("User update failed: {}", user.getEmail());
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("/{email}/password")
+    public ResponseEntity<User> updateUserPassword(@PathVariable String email, @RequestParam String password) {
+        User updatedUser = userService.updateUserPassword(email, password);
+        if (updatedUser != null) {
+            logger.info("User: {} updated password", updatedUser.getEmail());
+            return ResponseEntity.ok(updatedUser);
+        }
+        else {
+            logger.error("User: {} update password failed: ",email);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{email}/ban")
+    public ResponseEntity<User> banUser(@PathVariable String email) {
+        User bannedUser = userService.banUser(email);
+        if (bannedUser != null) {
+            logger.info("User: {} banned", bannedUser.getEmail());
+            return ResponseEntity.ok(bannedUser);
+        }
+        else {
+            logger.error("User: {} banned failed: ", email);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{email}/username")
+    public ResponseEntity<Boolean> updateUserUsername(@PathVariable String email, @RequestParam String newUsername) {
+        boolean updated = userService.updateUserUsername(email, newUsername);
+        if (updated) {
+            logger.info("User: {} updated username", email);
+            return ResponseEntity.ok(true);
+        }
+        else {
+            logger.error("User: {} username update failed: ", email);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{email}/profileImage")
+    public ResponseEntity<Boolean> updateUserProfileImage(@PathVariable String email, @RequestParam String newImageUrl) {
+        boolean updated = userService.updateUserProfileImage(email, newImageUrl);
+        if (updated) {
+            logger.info("User: {} updated profile image", email);
+            return ResponseEntity.ok(true);
+        }
+        else{
+            logger.error("User: {} profile image update failed: ", email);
             return ResponseEntity.notFound().build();
         }
     }
@@ -48,6 +123,13 @@ public class UserController {
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable String email) {
         boolean deleted = userService.deleteUser(email);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        if (deleted) {
+            logger.info("User: {} deleted", email);
+            return ResponseEntity.noContent().build();
+        }
+        else {
+            logger.error("User: {} deletion failed: ", email);
+            return ResponseEntity.notFound().build();
+        }
     }
 }

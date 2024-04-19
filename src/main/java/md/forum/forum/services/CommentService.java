@@ -15,11 +15,9 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-
     public Comment createComment(Comment comment) {
         return commentRepository.save(comment);
     }
-
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
@@ -28,7 +26,9 @@ public class CommentService {
     public Optional<Comment> getCommentById(Long id) {
         return commentRepository.findById(id);
     }
-
+    public List<Comment> getCommentsByPostId(Long postId) {
+        return commentRepository.findAllByPostId(postId);
+    }
 
     public Comment updateComment(Long id, Comment newComment) {
         return commentRepository.findById(id).map(comment -> {
@@ -39,7 +39,6 @@ public class CommentService {
         }).orElse(null);
     }
 
-
     public boolean deleteComment(Long id) {
         if (commentRepository.existsById(id)) {
             commentRepository.deleteById(id);
@@ -47,5 +46,4 @@ public class CommentService {
         }
         return false;
     }
-
 }
