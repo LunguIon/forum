@@ -32,6 +32,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
+
         Post createdPost = postService.createPost(post);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
