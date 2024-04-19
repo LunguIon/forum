@@ -35,7 +35,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    //don't use it !!!!!! for frontend
     @PutMapping("/{email}")
     public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User user) {
         User updatedUser = userService.updateUserProfile(email, user);
