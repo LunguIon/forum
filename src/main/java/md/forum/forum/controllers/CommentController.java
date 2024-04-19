@@ -48,7 +48,7 @@ public class CommentController {
                     return ResponseEntity.ok(comment);
                 })
                 .orElseGet(()->{
-                    logger.error("Comment with id {} was not found",id);
+                    commentNotFoundLog(id);
                     return ResponseEntity.notFound().build();
                 });
     }
@@ -75,22 +75,26 @@ public class CommentController {
             logger.info("Comment with id {} was updated", id);
             return ResponseEntity.ok(updatedComment);
         } else {
-            logger.error("Comment with id {} was not found", id);
+            commentNotFoundLog(id);
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+        logger.info("deleteComment was called");
         boolean deleted = commentService.deleteComment(id);
         if (deleted){
             logger.info("Comment with id {} was deleted", id);
             return ResponseEntity.noContent().build();
         }
         else {
-            logger.error("Comment with id {} was not found", id);
+            commentNotFoundLog(id);
             return ResponseEntity.notFound().build();
         }
 
+    }
+    public void commentNotFoundLog(Long id){
+        logger.error("Comment with id {} was not found", id);
     }
 }
