@@ -1,11 +1,9 @@
 package md.forum.forum.controllers;
 
 import md.forum.forum.models.Like;
-import md.forum.forum.models.User;
 import md.forum.forum.services.LikeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +52,7 @@ public class LikeController {
     @GetMapping("/post/withoutComments")
     public ResponseEntity<List<Like>> findAllForPostWithoutComments() {
         logger.info("Find all likes without comments");
-        List<Like> likes = likeService.findAllForComments();
+        List<Like> likes = likeService.findAllForPost();
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
         }
@@ -68,7 +66,7 @@ public class LikeController {
     @GetMapping("/post/{postId}/withoutComments")
     public ResponseEntity<List<Like>> findAllForPostWithoutComments(@PathVariable("postId") int postId) {
         logger.info("Find all likes without comments for post id: {}", postId);
-        List<Like> likes = likeService.findAllForComments(postId);
+        List<Like> likes = likeService.findAllForPost(postId);
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
         }
