@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/likes")
 public class LikeController {
@@ -33,7 +35,6 @@ public class LikeController {
         logger.info("Found {} likes", likes.size());
         return ResponseEntity.ok(likes);
     }
-
     // Endpoint to find all likes by a specific user
     @GetMapping("/user/{userEmail}")
     public ResponseEntity<List<Like>> findAllByUser(@PathVariable("userEmail") String userEmail) {

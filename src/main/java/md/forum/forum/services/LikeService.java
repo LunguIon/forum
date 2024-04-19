@@ -8,7 +8,6 @@ import md.forum.forum.repositorys.CommentRepository;
 import md.forum.forum.repositorys.LikeRepository;
 import md.forum.forum.repositorys.PostRepository;
 import md.forum.forum.repositorys.UserRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +29,6 @@ public class LikeService {
     public List<Like> findAll(){
         return likeRepository.findAll();
     }
-
     public List<Like> findAllByUser(String userEmail) {
         Optional<User> user = userRepository.findByEmail(userEmail);
         return likeRepository.findAllByUser(user.orElse(null));
