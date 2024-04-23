@@ -81,8 +81,8 @@ public class CommentServiceTest implements WithAssertions {
     public void testUpdateComment() {
         when(commentRepository.findById(ID_LONG)).thenReturn(Optional.of(comment));
         when(commentSecond.getContent()).thenReturn(TEST_TO_UPDATE);
-        when(commentSecond.getValue_of_like()).thenReturn(2);
-        when(commentSecond.getUpdate_date()).thenReturn(date);
+        when(commentSecond.getNumberOfLikes()).thenReturn(2);
+        when(commentSecond.getUpdateDate()).thenReturn(date);
 
         when(commentRepository.save(comment)).thenReturn(comment);
 
