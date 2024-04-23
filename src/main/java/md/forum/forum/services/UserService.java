@@ -26,7 +26,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists", ex);
         }
     }
-
+    
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -86,7 +86,6 @@ public class UserService {
         }
         return false;
     }
-
 
     public boolean deleteUser(String email) {
         if (userRepository.existsByEmail(email)) {
