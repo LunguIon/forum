@@ -14,7 +14,6 @@ public class ForumApplication {
 	public static void main(String[] args) {
 		logger.info("App starts");
 		SpringApplication.run(ForumApplication.class, args);
-		logger.info("App ends");
 	}
 
 }

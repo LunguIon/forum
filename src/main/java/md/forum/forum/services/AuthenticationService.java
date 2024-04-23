@@ -22,7 +22,7 @@ public class AuthenticationService {
     }
     public User signUp(RegisterUserDto registerUserDto) {
         User user = new User();
-        user.setUsername(registerUserDto.getFullName());
+        user.setUsername(registerUserDto.getUsername());
         user.setEmail(registerUserDto.getEmail());
         user.setPasswordHash(passwordEncoder.encode(registerUserDto.getPassword()));
         return userRepository.save(user);

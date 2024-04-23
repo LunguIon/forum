@@ -30,8 +30,8 @@ public class CommentService {
     public Comment updateComment(Long id, Comment newComment) {
         return commentRepository.findById(id).map(comment -> {
             comment.setContent(newComment.getContent());
-            comment.setValue_of_like(newComment.getValue_of_like());
-            comment.setUpdate_date(newComment.getUpdate_date());
+            comment.setNumberOfLikes(newComment.getNumberOfLikes());
+            comment.setUpdateDate(newComment.getUpdateDate());
             return commentRepository.save(comment);
         }).orElse(null);
     }

@@ -46,10 +46,7 @@ public class UserService {
         }).orElse(null);
     }
 
-    //firstly need to create Authentication
-    public boolean checkPassword(User user, String password) {
-        return false;
-    }
+
     public User updateUserProfile(String email, User newUser) {
         return userRepository.findByEmail(email).map(user -> {
             user.setUsername(newUser.getUsername());

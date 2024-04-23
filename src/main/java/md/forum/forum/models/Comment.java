@@ -17,17 +17,16 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column
     private String content;
     @Column(name = "value_of_like")
-    private int value_of_like;
+    private int numberOfLikes;
     @Column(name = "create_date")
-    private Date create_date;
+    private Date creationDate;
     @Column(name = "update_date")
-    private Date update_date;
+    private Date updateDate;
     @JoinColumn(name = "post_id",foreignKey = @ForeignKey(name = "fk_comment_post"))
-    @ManyToOne//treba ceva de discutat mai
+    @ManyToOne
     private Post post;
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "fk_comment_user"))
     @ManyToOne
