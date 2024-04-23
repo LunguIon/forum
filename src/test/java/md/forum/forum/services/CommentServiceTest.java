@@ -19,8 +19,8 @@ import static org.mockito.Mockito.*;
 public class CommentServiceTest implements WithAssertions {
     public static final String TEST_CONTENT = "Test content";
     public static final String TEST_TO_UPDATE = "Test to update";
-    public static final long ID = 69L;
-
+    public static final long ID_LONG = 69L;
+    public static final int ID_INT = 69;
     @Mock
     private CommentRepository commentRepository;
     @Mock
@@ -34,14 +34,14 @@ public class CommentServiceTest implements WithAssertions {
 
     @Test
     public void testCreateComment() {
-        when(comment.getId()).thenReturn(69);
+        when(comment.getId()).thenReturn(ID_INT);
         when(comment.getContent()).thenReturn(TEST_CONTENT);
         when(commentRepository.save(comment)).thenReturn(comment);
 
         assertThat(commentService.createComment(comment))
                 .isNotNull()
                 .returns(TEST_CONTENT, Comment::getContent)
-                .returns(69, Comment::getId);
+                .returns(ID_INT, Comment::getId);
 
         verify(commentRepository, times(1)).save(comment);
     }
@@ -50,16 +50,15 @@ public class CommentServiceTest implements WithAssertions {
     public void testGetAllComments() {
         when(commentRepository.findAll()).thenReturn(List.of(comment, commentSecond));
 
-        List<Comment> allComments = commentService.getAllComments();
-        assertThat(allComments).hasSize(2)
+        assertThat(commentService.getAllComments()).hasSize(2)
                 .contains(commentSecond, comment);
 
         verify(commentRepository, times(1)).findAll();
     }
 
     @Test
-    public void testGetCommentByIdFound() {
-        when(comment.getId()).thenReturn(69);
+    public void testGetCommentById_Found() {
+        when(comment.getId()).thenReturn(ID_INT);
         when(comment.getContent()).thenReturn(TEST_CONTENT);
         when(commentRepository.findById((long) comment.getId())).thenReturn(Optional.of(comment));
 
@@ -73,40 +72,40 @@ public class CommentServiceTest implements WithAssertions {
         verify(commentRepository, times(1)).findById((long) comment.getId());
     }
 
-    @Test void testGetCommentByIdNotFound() {
+    @Test void testGetCommentById_NotFound() {
         Optional<Comment> foundComment = commentService.getCommentById((long) comment.getId());
         assertThat(foundComment).isEmpty();
     }
 
     @Test
     public void testUpdateComment() {
-        when(commentRepository.findById(ID)).thenReturn(Optional.of(comment));
+        when(commentRepository.findById(ID_LONG)).thenReturn(Optional.of(comment));
         when(commentSecond.getContent()).thenReturn(TEST_TO_UPDATE);
         when(commentSecond.getValue_of_like()).thenReturn(2);
         when(commentSecond.getUpdate_date()).thenReturn(date);
 
         when(commentRepository.save(comment)).thenReturn(comment);
 
-        assertThat(commentService.updateComment(ID, commentSecond))
+        assertThat(commentService.updateComment(ID_LONG, commentSecond))
                 .isEqualTo(comment);
 
-        verify(commentRepository).findById(ID);
+        verify(commentRepository).findById(ID_LONG);
         verify(commentRepository).save(comment);
     }
 
     @Test
-    public void testUpdateCommentWithEmpty() {
-        when(commentRepository.findById(ID)).thenReturn(Optional.empty());
+    public void testUpdateComment_EmptyId() {
+        when(commentRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
-        assertThat(commentService.updateComment(ID, commentSecond))
+        assertThat(commentService.updateComment(ID_LONG, commentSecond))
                 .isNull();
 
-        verify(commentRepository).findById(ID);
+        verify(commentRepository).findById(ID_LONG);
         verifyNoMoreInteractions(commentRepository);
     }
 
     @Test
-    public void testUpdateCommentWithNullId() {
+    public void testUpdateComment_NullId() {
         assertThat(commentService.updateComment(null, commentSecond))
                 .isNull();
 
@@ -114,32 +113,32 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testUpdateCommentWithNullNewComment() {
-        when(commentRepository.findById(ID)).thenReturn(Optional.of(comment));
+    public void testUpdateComment_NullNewComment() {
+        when(commentRepository.findById(ID_LONG)).thenReturn(Optional.of(comment));
 
-        assertThatThrownBy(()->commentService.updateComment(ID, null))
+        assertThatThrownBy(()->commentService.updateComment(ID_LONG, null))
                 .isInstanceOf(NullPointerException.class);
 
-        verify(commentRepository).findById(ID);
+        verify(commentRepository).findById(ID_LONG);
         verifyNoMoreInteractions(commentRepository);
     }
 
     @Test
     public void testDeleteComment() {
-        when(commentRepository.existsById(ID)).thenReturn(true);
-        doNothing().when(commentRepository).deleteById(ID);
+        when(commentRepository.existsById(ID_LONG)).thenReturn(true);
+        doNothing().when(commentRepository).deleteById(ID_LONG);
 
-        assertThat(commentService.deleteComment(ID)).isTrue();
+        assertThat(commentService.deleteComment(ID_LONG)).isTrue();
 
-        verify(commentRepository).deleteById(ID);
+        verify(commentRepository).deleteById(ID_LONG);
     }
 
     @Test
-    public void testDeleteNonExistentComment() {
-        when(commentRepository.existsById(ID)).thenReturn(false);
+    public void testDeleteComment_NotExist() {
+        when(commentRepository.existsById(ID_LONG)).thenReturn(false);
 
-        assertThat(commentService.deleteComment(ID)).isFalse();
+        assertThat(commentService.deleteComment(ID_LONG)).isFalse();
 
-        verify(commentRepository, never()).deleteById(ID);
+        verify(commentRepository, never()).deleteById(ID_LONG);
     }
 }
