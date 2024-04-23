@@ -2,7 +2,10 @@ package md.forum.forum.services;
 
 import md.forum.forum.models.User;
 import md.forum.forum.repositorys.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +20,11 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        return userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        }catch (DataIntegrityViolationException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists", ex);
+        }
     }
 
     public List<User> getAllUsers() {
