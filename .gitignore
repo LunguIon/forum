@@ -36,6 +36,7 @@ build/
 
 ### other ###
 .script.sql.swp
+logs/forum.log
 
 /logs
 *.log
