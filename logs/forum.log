@@ -1,0 +1,31 @@
+[INFO ] 2024-04-24 13:21:24.498 [main] ForumApplication - Starting ForumApplication using Java 17.0.5 with PID 31711 (/Users/lunguion/Downloads/forum/target/classes started by lunguion in /Users/lunguion/Downloads/forum)
+[INFO ] 2024-04-24 13:21:24.508 [main] ForumApplication - No active profile set, falling back to 1 default profile: "default"
+[INFO ] 2024-04-24 13:21:25.404 [main] RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[INFO ] 2024-04-24 13:21:25.464 [main] RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 47 ms. Found 5 JPA repository interfaces.
+[INFO ] 2024-04-24 13:21:26.102 [main] TomcatWebServer - Tomcat initialized with port 8080 (http)
+[INFO ] 2024-04-24 13:21:26.112 [main] Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+[INFO ] 2024-04-24 13:21:26.125 [main] StandardService - Starting service [Tomcat]
+[INFO ] 2024-04-24 13:21:26.126 [main] StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+[INFO ] 2024-04-24 13:21:26.217 [main] [/] - Initializing Spring embedded WebApplicationContext
+[INFO ] 2024-04-24 13:21:26.222 [main] ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1670 ms
+[INFO ] 2024-04-24 13:21:26.634 [main] Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+[INFO ] 2024-04-24 13:21:26.689 [main] RegionFactoryInitiator - HHH000026: Second-level cache disabled
+[INFO ] 2024-04-24 13:21:27.037 [main] SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+[INFO ] 2024-04-24 13:21:27.074 [main] HikariDataSource - HikariPool-1 - Starting...
+[INFO ] 2024-04-24 13:21:27.159 [main] HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6f289728
+[INFO ] 2024-04-24 13:21:27.160 [main] HikariDataSource - HikariPool-1 - Start completed.
+[WARN ] 2024-04-24 13:21:27.199 [main] deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[INFO ] 2024-04-24 13:21:28.094 [main] JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[INFO ] 2024-04-24 13:21:28.249 [main] LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+[WARN ] 2024-04-24 13:21:28.547 [main] JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[INFO ] 2024-04-24 13:21:28.942 [main] CommentController - CommentController was initialized
+[INFO ] 2024-04-24 13:21:28.989 [main] QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+[INFO ] 2024-04-24 13:21:29.381 [main] PostController - PostController constructor was initialized
+[INFO ] 2024-04-24 13:21:29.382 [main] UserController - UserController was initialized
+[INFO ] 2024-04-24 13:21:29.566 [main] DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7f1581bb, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@30407f28, org.springframework.security.web.context.SecurityContextHolderFilter@709c41da, org.springframework.security.web.header.HeaderWriterFilter@5fe80760, org.springframework.security.web.authentication.logout.LogoutFilter@627dfd9f, md.forum.forum.config.JwtAuthenticationFilter@46df794e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4a467f08, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3741a170, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2dac4d04, org.springframework.security.web.session.SessionManagementFilter@1791670e, org.springframework.security.web.access.ExceptionTranslationFilter@2565b097, org.springframework.security.web.access.intercept.AuthorizationFilter@7ec63b9a]
+[INFO ] 2024-04-24 13:21:29.831 [main] Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+[INFO ] 2024-04-24 13:21:29.843 [main] TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+[INFO ] 2024-04-24 13:21:29.862 [main] ForumApplication - Started ForumApplication in 5.836 seconds (process running for 7.909)
+[INFO ] 2024-04-24 13:22:40.048 [SpringApplicationShutdownHook] LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+[INFO ] 2024-04-24 13:22:40.052 [SpringApplicationShutdownHook] HikariDataSource - HikariPool-1 - Shutdown initiated...
+[INFO ] 2024-04-24 13:22:40.055 [SpringApplicationShutdownHook] HikariDataSource - HikariPool-1 - Shutdown completed.
