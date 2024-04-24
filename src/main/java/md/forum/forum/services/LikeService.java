@@ -19,6 +19,7 @@ public class LikeService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+
     public LikeService(LikeRepository likeRepository, UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository) {
         this.likeRepository = likeRepository;
         this.userRepository = userRepository;
@@ -26,9 +27,10 @@ public class LikeService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Like> findAll(){
+    public List<Like> findAll() {
         return likeRepository.findAll();
     }
+
     public List<Like> findAllByUser(String userEmail) {
         Optional<User> user = userRepository.findByEmail(userEmail);
         return likeRepository.findAllByUser(user.orElse(null));
@@ -42,7 +44,6 @@ public class LikeService {
     public List<Like> findAllForPost() {
         return likeRepository.findAllForPost();
     }
-
 
 
     public List<Like> findAllForComments() {

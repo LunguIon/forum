@@ -24,15 +24,15 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(String username) {
         Optional<User> userOptional = userRepository.findByEmail(username);
-        if(userOptional.isPresent()) {
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
-            RefreshToken refreshToken =  RefreshToken.builder()
+            RefreshToken refreshToken = RefreshToken.builder()
                     .user(user)
                     .token(UUID.randomUUID().toString())
                     .expiryDate(Instant.now().plusMillis(600000))
                     .build();
             return refreshTokenRepository.save(refreshToken);
-        }else{
+        } else {
             throw new IllegalArgumentException("User not found for username : " + username);
         }
 
@@ -42,8 +42,9 @@ public class RefreshTokenService {
     public Optional<RefreshToken> findByToken(String username) {
         return refreshTokenRepository.findByToken(username);
     }
+
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
-        if(refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
+        if (refreshToken.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(refreshToken);
             throw new RefreshTokenExpiredException(refreshToken.getToken());
         }

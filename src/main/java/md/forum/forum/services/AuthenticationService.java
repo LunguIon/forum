@@ -1,7 +1,6 @@
 package md.forum.forum.services;
 
 
-
 import md.forum.forum.dto.LoginUserDto;
 import md.forum.forum.dto.RegisterUserDto;
 import md.forum.forum.models.User;
@@ -22,6 +21,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
+
     public User signUp(RegisterUserDto registerUserDto) {
         User user = new User();
         user.setUsername(registerUserDto.getUsername());
@@ -29,6 +29,7 @@ public class AuthenticationService {
         user.setPasswordHash(passwordEncoder.encode(registerUserDto.getPassword()));
         return userRepository.save(user);
     }
+
     public User authenticate(LoginUserDto loginUserDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

@@ -3,11 +3,11 @@ package md.forum.forum.services;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
@@ -33,11 +33,11 @@ public class JwtService {
     }
 
 
-
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         return buildToken(claims, email, jwtExpiration);
     }
+
     private String buildToken(Map<String, Object> claims, String username, long expiration) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -47,7 +47,6 @@ public class JwtService {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
 
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
