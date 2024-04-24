@@ -2,13 +2,13 @@ package md.forum.forum.controllers;
 
 import md.forum.forum.models.Post;
 import md.forum.forum.services.PostService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/posts")
@@ -28,6 +28,7 @@ public class PostController {
         logger.info("getAllPosts returned {} posts", posts.size());
         return ResponseEntity.ok(posts);
     }
+
     @GetMapping("/user/{email}")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable String email) {
         logger.info("getAllPostsByUser was called");
@@ -55,11 +56,10 @@ public class PostController {
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         logger.info("createPost was called");
         Post createdPost = postService.createPost(post);
-        if(createdPost == null) {
+        if (createdPost == null) {
             logger.info("Post was not created");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        else {
+        } else {
             logger.info("Post was created with id: {}", createdPost.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
         }
@@ -82,11 +82,10 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         logger.info("deletePost was called with id: {}", id);
         boolean deleted = postService.deletePost(id);
-        if(deleted){
+        if (deleted) {
             logger.info("Post was deleted with id: {}", id);
             return ResponseEntity.noContent().build();
-        }
-        else {
+        } else {
             logger.error("Post was not found, and was not deleted");
             return ResponseEntity.notFound().build();
         }

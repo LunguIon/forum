@@ -1,22 +1,37 @@
 package md.forum.forum.controllers;
 
+import md.forum.forum.dto.JwtResponseDTO;
 import md.forum.forum.dto.LoginUserDto;
+import md.forum.forum.dto.RefreshTokenRequestDTO;
 import md.forum.forum.dto.RegisterUserDto;
+import md.forum.forum.models.RefreshToken;
 import md.forum.forum.models.User;
-import md.forum.forum.responses.LoginResponse;
 import md.forum.forum.services.AuthenticationService;
 import md.forum.forum.services.JwtService;
+import md.forum.forum.services.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+    private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
+
+    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
+        this.authenticationManager = authenticationManager;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("/signUp")
@@ -24,13 +39,31 @@ public class AuthenticationController {
         User registeredUser = authenticationService.signUp(registerUserDto);
         return ResponseEntity.ok(registeredUser);
     }
+
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginUserDto loginUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-        return ResponseEntity.ok(loginResponse);
+    public JwtResponseDTO authenticateAndGetToken(@RequestBody LoginUserDto loginUserDto) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserDto.getEmail(), loginUserDto.getPassword()));
+        if (authentication.isAuthenticated()) {
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginUserDto.getEmail());
+            return JwtResponseDTO.builder()
+                    .accessToken(jwtService.generateToken(loginUserDto.getEmail()))
+                    .token(refreshToken.getToken())
+                    .build();
+        } else {
+            throw new UsernameNotFoundException("Invalid user request !");
+        }
+    }
+
+    @PostMapping("refreshToken")
+    public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
+        return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String accessToken = jwtService.generateToken(user.getEmail());
+                    return JwtResponseDTO.builder()
+                            .accessToken(accessToken)
+                            .token(refreshTokenRequestDTO.getToken()).build();
+                }).orElseThrow(() -> new RuntimeException("RefreshToken is not in the DB !"));
     }
 }

@@ -2,7 +2,7 @@ package md.forum.forum.services;
 
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;
-import md.forum.forum.repositorys.PostRepository;
+import md.forum.forum.repository.PostRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

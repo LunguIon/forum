@@ -4,19 +4,17 @@ import md.forum.forum.models.Comment;
 import md.forum.forum.services.CommentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
+    private static final Logger logger = LogManager.getLogger(CommentController.class);
     private final CommentService commentService;
-    private static final Logger logger =  LogManager.getLogger(CommentController.class);
 
     public CommentController(CommentService commentService) {
         logger.info("CommentController was initialized");
@@ -30,6 +28,7 @@ public class CommentController {
         logger.info("getAllComments returned {} comments", comments.size());
         return ResponseEntity.ok(comments);
     }
+
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
         logger.info("getCommentsByPostId was called");
@@ -44,10 +43,10 @@ public class CommentController {
 
         return commentService.getCommentById(id)
                 .map(comment -> {
-                    logger.info("getCommentById was called with id {}",id);
+                    logger.info("getCommentById was called with id {}", id);
                     return ResponseEntity.ok(comment);
                 })
-                .orElseGet(()->{
+                .orElseGet(() -> {
                     commentNotFoundLog(id);
                     return ResponseEntity.notFound().build();
                 });
@@ -57,11 +56,10 @@ public class CommentController {
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         logger.info("createComment was called");
         Comment createdComment = commentService.createComment(comment);
-        if(createdComment != null) {
+        if (createdComment != null) {
             logger.info("Comment with id {} was created", createdComment.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
-        }
-        else {
+        } else {
             logger.error("Comment was not created");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -84,17 +82,17 @@ public class CommentController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         logger.info("deleteComment was called");
         boolean deleted = commentService.deleteComment(id);
-        if (deleted){
+        if (deleted) {
             logger.info("Comment with id {} was deleted", id);
             return ResponseEntity.noContent().build();
-        }
-        else {
+        } else {
             commentNotFoundLog(id);
             return ResponseEntity.notFound().build();
         }
 
     }
-    public void commentNotFoundLog(Long id){
+
+    public void commentNotFoundLog(Long id) {
         logger.error("Comment with id {} was not found", id);
     }
 }

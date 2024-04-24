@@ -25,10 +25,10 @@ public class Comment {
     private Date creationDate;
     @Column(name = "update_date")
     private Date updateDate;
-    @JoinColumn(name = "post_id",foreignKey = @ForeignKey(name = "fk_comment_post"))
+    @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_comment_post"))
     @ManyToOne
     private Post post;
-    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "fk_comment_user"))
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_comment_user"))
     @ManyToOne
     private User user;
 

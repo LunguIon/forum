@@ -5,7 +5,7 @@ package md.forum.forum.services;
 import md.forum.forum.dto.LoginUserDto;
 import md.forum.forum.dto.RegisterUserDto;
 import md.forum.forum.models.User;
-import md.forum.forum.repositorys.UserRepository;
+import md.forum.forum.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -3,7 +3,7 @@ package md.forum.forum.services;
 
 
 import md.forum.forum.models.Post;
-import md.forum.forum.repositorys.PostRepository;
+import md.forum.forum.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;

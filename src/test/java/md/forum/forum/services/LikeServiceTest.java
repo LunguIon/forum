@@ -4,10 +4,10 @@ import md.forum.forum.models.Comment;
 import md.forum.forum.models.Like;
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;
-import md.forum.forum.repositorys.CommentRepository;
-import md.forum.forum.repositorys.LikeRepository;
-import md.forum.forum.repositorys.PostRepository;
-import md.forum.forum.repositorys.UserRepository;
+import md.forum.forum.repository.CommentRepository;
+import md.forum.forum.repository.LikeRepository;
+import md.forum.forum.repository.PostRepository;
+import md.forum.forum.repository.UserRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -136,7 +136,7 @@ public class LikeServiceTest implements WithAssertions {
         when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
         when(likeRepository.findAllForPost(post)).thenReturn(List.of(like));
 
-        assertThat(likeService.findAllForPost(Math.toIntExact(POST_ID)))
+        assertThat(likeService.findAllForPost())
                 .contains(like);
 
         verify(postRepository, times(1)).findById(POST_ID);
@@ -148,8 +148,8 @@ public class LikeServiceTest implements WithAssertions {
         when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
         when(likeRepository.findAllForPost(post)).thenReturn(List.of());
 
-        assertThat(likeService.findAllForPost(Math.toIntExact(POST_ID)))
-                .isEmpty();
+        assertThat(likeService.findAllForPost()
+                .isEmpty());
 
         verify(postRepository, times(1)).findById(POST_ID);
         verify(likeRepository, times(1)).findAllForPost(post);

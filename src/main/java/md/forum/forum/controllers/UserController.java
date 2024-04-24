@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -45,10 +46,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
-        if(createdUser == null) {
+        if (createdUser == null) {
             logger.error("User creation failed: {}", user.getEmail());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }else {
+        } else {
             logger.info("User created: {}", createdUser.getEmail());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         }
@@ -68,15 +69,15 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/{email}/password")
     public ResponseEntity<User> updateUserPassword(@PathVariable String email, @RequestParam String password) {
         User updatedUser = userService.updateUserPassword(email, password);
         if (updatedUser != null) {
             logger.info("User: {} updated password", updatedUser.getEmail());
             return ResponseEntity.ok(updatedUser);
-        }
-        else {
-            logger.error("User: {} update password failed: ",email);
+        } else {
+            logger.error("User: {} update password failed: ", email);
             return ResponseEntity.notFound().build();
         }
     }
@@ -87,8 +88,7 @@ public class UserController {
         if (bannedUser != null) {
             logger.info("User: {} banned", bannedUser.getEmail());
             return ResponseEntity.ok(bannedUser);
-        }
-        else {
+        } else {
             logger.error("User: {} banned failed: ", email);
             return ResponseEntity.notFound().build();
         }
@@ -100,8 +100,7 @@ public class UserController {
         if (updated) {
             logger.info("User: {} updated username", email);
             return ResponseEntity.ok(true);
-        }
-        else {
+        } else {
             logger.error("User: {} username update failed: ", email);
             return ResponseEntity.notFound().build();
         }
@@ -113,8 +112,7 @@ public class UserController {
         if (updated) {
             logger.info("User: {} updated profile image", email);
             return ResponseEntity.ok(true);
-        }
-        else{
+        } else {
             logger.error("User: {} profile image update failed: ", email);
             return ResponseEntity.notFound().build();
         }
@@ -126,8 +124,7 @@ public class UserController {
         if (deleted) {
             logger.info("User: {} deleted", email);
             return ResponseEntity.noContent().build();
-        }
-        else {
+        } else {
             logger.error("User: {} deletion failed: ", email);
             return ResponseEntity.notFound().build();
         }

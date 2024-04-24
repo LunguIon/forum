@@ -1,4 +1,4 @@
-package md.forum.forum.repositorys;
+package md.forum.forum.repository;
 
 import md.forum.forum.models.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/likes")
 public class LikeController {
     private final LikeService likeService;
     Logger logger = LogManager.getLogger(LikeController.class);
+
     @Autowired
     public LikeController(LikeService likeService) {
         this.likeService = likeService;
@@ -36,6 +36,7 @@ public class LikeController {
         logger.info("Found {} likes", likes.size());
         return ResponseEntity.ok(likes);
     }
+
     // Endpoint to find all likes by a specific user
     @GetMapping("/user/{userEmail}")
     public ResponseEntity<List<Like>> findAllByUser(@PathVariable("userEmail") String userEmail) {
@@ -44,8 +45,7 @@ public class LikeController {
         logger.info("Found {} likes by user email: {}", likes.size(), userEmail);
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
-        }
-        else {
+        } else {
             return ResponseEntity.noContent().build();
         }
 
@@ -59,8 +59,7 @@ public class LikeController {
         logger.info("Found {} likes by post id: {}", likes.size(), postId);
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
-        }
-        else {
+        } else {
             return ResponseEntity.noContent().build();
         }
     }
@@ -72,8 +71,7 @@ public class LikeController {
         List<Like> likes = likeService.findAllForPost();
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
-        }
-        else {
+        } else {
             logger.info("Likes was not found");
             return ResponseEntity.noContent().build();
         }
@@ -86,9 +84,8 @@ public class LikeController {
         List<Like> likes = likeService.findAllByPost(postId);
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
-        }
-        else {
-            logger.info("Likes was not found for post {}",postId);
+        } else {
+            logger.info("Likes was not found for post {}", postId);
             return ResponseEntity.noContent().build();
         }
 
@@ -102,26 +99,23 @@ public class LikeController {
         logger.info("Found {} likes For comments", likes.size());
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
-        }
-        else{
+        } else {
             logger.info("Likes was not found for comments");
             return ResponseEntity.noContent().build();
         }
-
     }
 
     // Endpoint to find all likes for a specific comment
     @GetMapping("/comments/{commentId}")
-    public ResponseEntity<List<Like>>findAllForComments(@PathVariable("commentId") int commentId) {
+    public ResponseEntity<List<Like>> findAllForComments(@PathVariable("commentId") int commentId) {
         logger.info("Find all likes for comment id: {}", commentId);
         List<Like> likes = likeService.findAllForComments(commentId);
 
         if (!likes.isEmpty()) {
             logger.info("Found {} likes for comment id: {}", likes.size(), commentId);
             return ResponseEntity.ok(likes);
-        }
-        else{
-            logger.info("Likes was not found for comments");
+        } else {
+            logger.info("Like for comment id {} was not found", commentId);
             return ResponseEntity.noContent().build();
         }
     }

@@ -1,4 +1,4 @@
-package md.forum.forum.repositorys;
+package md.forum.forum.repository;
 
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;

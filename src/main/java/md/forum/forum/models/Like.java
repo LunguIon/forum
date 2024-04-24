@@ -21,13 +21,13 @@ public class Like {
     private boolean upvote;
     @Column(name = "create_date")
     private Date createDate;
-    @JoinColumn(name = "post_id",foreignKey = @ForeignKey(name = "fk_like_post"))
+    @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_like_post"))
     @ManyToOne
     private Post post;
-    @JoinColumn(name = "comment_id",foreignKey = @ForeignKey(name = "fk_like_comment"))
+    @JoinColumn(name = "comment_id", foreignKey = @ForeignKey(name = "fk_like_comment"))
     @ManyToOne
     private Comment comments;
-    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "fk_like_user"))
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_like_user"))
     @ManyToOne
     private User user;
 

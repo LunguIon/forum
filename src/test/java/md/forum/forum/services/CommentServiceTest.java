@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import md.forum.forum.models.Comment;
-import md.forum.forum.repositorys.CommentRepository;
+import md.forum.forum.repository.CommentRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
