@@ -4,6 +4,7 @@ import md.forum.forum.models.Like;
 import md.forum.forum.services.LikeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class LikeController {
     private final LikeService likeService;
     Logger logger = LogManager.getLogger(LikeController.class);
-
+    @Autowired
     public LikeController(LikeService likeService) {
         this.likeService = likeService;
 
@@ -82,7 +83,7 @@ public class LikeController {
     @GetMapping("/post/{postId}/withoutComments")
     public ResponseEntity<List<Like>> findAllForPostWithoutComments(@PathVariable("postId") int postId) {
         logger.info("Find all likes without comments for post id: {}", postId);
-        List<Like> likes = likeService.findAllForPost(postId);
+        List<Like> likes = likeService.findAllByPost(postId);
         if (!likes.isEmpty()) {
             return ResponseEntity.ok(likes);
         }

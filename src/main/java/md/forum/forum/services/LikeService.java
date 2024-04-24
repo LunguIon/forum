@@ -43,10 +43,7 @@ public class LikeService {
         return likeRepository.findAllForPost();
     }
 
-    public List<Like> findAllForPost(long postId) {
-        Optional<Post> post = postRepository.findById( postId);
-        return likeRepository.findAllForPost(post.orElse(null));
-    }
+
 
     public List<Like> findAllForComments() {
         return likeRepository.findAllForComments();
