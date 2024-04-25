@@ -1,4 +1,4 @@
-package md.forum.forum.services;
+package md.forum.forum.security.service;
 
 
 import md.forum.forum.dto.LoginUserDto;

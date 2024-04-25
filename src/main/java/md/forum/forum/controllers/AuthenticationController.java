@@ -4,11 +4,11 @@ import md.forum.forum.dto.JwtResponseDTO;
 import md.forum.forum.dto.LoginUserDto;
 import md.forum.forum.dto.RefreshTokenRequestDTO;
 import md.forum.forum.dto.RegisterUserDto;
-import md.forum.forum.models.RefreshToken;
+import md.forum.forum.security.model.RefreshToken;
 import md.forum.forum.models.User;
-import md.forum.forum.services.AuthenticationService;
-import md.forum.forum.services.JwtService;
-import md.forum.forum.services.RefreshTokenService;
+import md.forum.forum.security.service.AuthenticationService;
+import md.forum.forum.security.service.JwtService;
+import md.forum.forum.security.service.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,7 +51,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("refreshToken")
+    @PostMapping("/refreshToken")
     public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
                 .map(refreshTokenService::verifyExpiration)

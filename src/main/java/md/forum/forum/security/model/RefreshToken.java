@@ -1,10 +1,11 @@
-package md.forum.forum.models;
+package md.forum.forum.security.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import md.forum.forum.models.User;
 
 import java.time.Instant;
 

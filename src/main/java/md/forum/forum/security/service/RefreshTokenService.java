@@ -1,9 +1,9 @@
-package md.forum.forum.services;
+package md.forum.forum.security.service;
 
 import md.forum.forum.exceptions.RefreshTokenExpiredException;
-import md.forum.forum.models.RefreshToken;
+import md.forum.forum.security.model.RefreshToken;
 import md.forum.forum.models.User;
-import md.forum.forum.repository.RefreshTokenRepository;
+import md.forum.forum.security.repository.RefreshTokenRepository;
 import md.forum.forum.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

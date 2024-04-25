@@ -1,4 +1,4 @@
-package md.forum.forum.services;
+package md.forum.forum.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,6 @@
-package md.forum.forum.repository;
+package md.forum.forum.security.repository;
 
-import md.forum.forum.models.RefreshToken;
+import md.forum.forum.security.model.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

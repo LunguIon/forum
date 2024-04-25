@@ -1,4 +1,4 @@
-package md.forum.forum.config;
+package md.forum.forum.security.config;
 
 import md.forum.forum.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
