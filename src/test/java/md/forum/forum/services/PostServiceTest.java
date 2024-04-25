@@ -17,14 +17,14 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PostServiceTest implements WithAssertions {
-    public static final String TITLE_POST = "The title of post";
-    public static final String CONTENT_POST = "This is content";
-    public static final int VALUE_OF_LIKE = 2;
-    public static final String IMG_URL = "image url";
-    public static final int ID = 1;
-    public static final Long ID_LONG = 1L;
-    public static final String EMAIl = "johndoe@gmail.com";
+class PostServiceTest implements WithAssertions {
+    static final String TITLE_POST = "The title of post";
+    static final String CONTENT_POST = "This is content";
+    static final int VALUE_OF_LIKE = 2;
+    static final String IMG_URL = "image url";
+    static final int ID = 1;
+    static final Long ID_LONG = 1L;
+    static final String EMAIl = "johndoe@gmail.com";
     @Mock
     private PostRepository postRepository;
     @Mock
@@ -39,15 +39,14 @@ public class PostServiceTest implements WithAssertions {
     private PostService postService;
 
     @Test
-    public void testCreatePost(){
+    void testCreatePost() {
         when(post.getTitle()).thenReturn(TITLE_POST);
         when(post.getContent()).thenReturn(CONTENT_POST);
         when(post.getValueOfLikes()).thenReturn(VALUE_OF_LIKE);
         when(postRepository.save(post)).thenReturn(post);
 
         assertThat(postService.createPost(post))
-                .isNotNull()
-                .returns(CONTENT_POST, Post::getContent)
+                .isNotNull().returns(CONTENT_POST, Post::getContent)
                 .returns(VALUE_OF_LIKE, Post::getValueOfLikes)
                 .returns(TITLE_POST, Post::getTitle);
 
@@ -55,19 +54,20 @@ public class PostServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testGetAllPosts() {
+    void testGetAllPosts() {
         when(postRepository.findAll()).thenReturn(List.of(post, postSecond));
 
-        assertThat(postService.getAllPosts()).hasSize(2)
+        assertThat(postService.getAllPosts())
+                .hasSize(2)
                 .contains(post, postSecond);
 
         verify(postRepository, times(1)).findAll();
     }
 
     @Test
-    public void testGetPostById() {
+    void testGetPostById() {
         when(post.getId()).thenReturn(ID);
-        when(postRepository.findById((long)ID)).thenReturn(Optional.of(post));
+        when(postRepository.findById((long) ID)).thenReturn(Optional.of(post));
 
         assertThat(postService.getPostById((long) post.getId()))
                 .isPresent()
@@ -79,22 +79,21 @@ public class PostServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testGetPostById_IsEmpty() {
+    void testGetPostById_IsEmpty() {
         when(postRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
-        assertThat(postService.getPostById(ID_LONG))
-                .isEmpty();
+        assertThat(postService.getPostById(ID_LONG)).isEmpty();
 
         verify(postRepository, times(1)).findById(ID_LONG);
     }
 
     @Test
-    public void testGetPostById_IsNull(){
+    void testGetPostById_IsNull() {
         assertThat(postService.getPostById(null)).isEmpty();
     }
 
     @Test
-    public void testGetPostByUserName(){
+    void testGetPostByUserName() {
         when(userService.getUserByEmail(EMAIl)).thenReturn(Optional.of(user));
 
         when(post.getId()).thenReturn(ID);
@@ -113,10 +112,10 @@ public class PostServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testGetPostByUserName_IsNull() {
+    void testGetPostByUserName_IsNull() {
         when(userService.getUserByEmail(null)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(()-> postService.getPostsByUserName(null))
+        assertThatThrownBy(() -> postService.getPostsByUserName(null))
                 .isInstanceOf(NoSuchElementException.class);
 
         verify(userService, times(1)).getUserByEmail(null);
@@ -125,44 +124,41 @@ public class PostServiceTest implements WithAssertions {
 
 
     @Test
-    public void testUpdatePost() {
+    void testUpdatePost() {
         when(postRepository.findById(ID_LONG)).thenReturn(Optional.of(post));
         when(postSecond.getTitle()).thenReturn(TITLE_POST);
         when(postSecond.getContent()).thenReturn(CONTENT_POST);
         when(postSecond.getImageURL()).thenReturn(IMG_URL);
         when(postRepository.save(post)).thenReturn(post);
 
-        assertThat(postService.updatePost(ID_LONG, postSecond))
-                .isEqualTo(post);
+        assertThat(postService.updatePost(ID_LONG, postSecond)).isEqualTo(post);
 
         verify(postRepository).findById(ID_LONG);
         verify(postRepository).save(post);
     }
 
     @Test
-    public void testUpdatePost_EmptyID() {
+    void testUpdatePost_EmptyID() {
         when(postRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
-        assertThat(postService.updatePost(ID_LONG, postSecond))
-                .isNull();
+        assertThat(postService.updatePost(ID_LONG, postSecond)).isNull();
 
         verify(postRepository).findById(ID_LONG);
         verifyNoMoreInteractions(postRepository);
     }
 
     @Test
-    public void testUpdatePost_NullId(){
-        assertThat(postService.updatePost(null, postSecond))
-                .isNull();
+    void testUpdatePost_NullId() {
+        assertThat(postService.updatePost(null, postSecond)).isNull();
 
         verify(postRepository).findById(null);
     }
 
     @Test
-    public void testUpdatePost_NullNewComment() {
+    void testUpdatePost_NullNewComment() {
         when(postRepository.findById(ID_LONG)).thenReturn(Optional.of(post));
 
-        assertThatThrownBy(()->postService.updatePost(ID_LONG, null))
+        assertThatThrownBy(() -> postService.updatePost(ID_LONG, null))
                 .isInstanceOf(NullPointerException.class);
 
         verify(postRepository).findById(ID_LONG);
@@ -170,7 +166,7 @@ public class PostServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testDeletePost() {
+    void testDeletePost() {
         when(postRepository.existsById(ID_LONG)).thenReturn(true);
         doNothing().when(postRepository).deleteById(ID_LONG);
 
@@ -180,19 +176,11 @@ public class PostServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testDeletePost_NotExist() {
+    void testDeletePost_NotExist() {
         when(postRepository.existsById(ID_LONG)).thenReturn(false);
 
         assertThat(postService.deletePost(ID_LONG)).isFalse();
 
         verify(postRepository, never()).deleteById(ID_LONG);
     }
-
-
-
-
-
-
-
-
 }
