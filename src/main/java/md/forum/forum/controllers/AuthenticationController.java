@@ -64,8 +64,4 @@ public class AuthenticationController {
                 }).orElseThrow(() -> new RuntimeException("RefreshToken is not in the DB !"));
     }
 
-    @GetMapping
-    public Object sayHello(Authentication authentication) {
-        return authentication.getPrincipal();
-    }
 }
