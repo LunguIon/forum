@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import md.forum.forum.models.Comment;
-import md.forum.forum.repositorys.CommentRepository;
+import md.forum.forum.repository.CommentRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,11 +16,11 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CommentServiceTest implements WithAssertions {
-    static final String TEST_CONTENT = "Test content";
-    static final String TEST_TO_UPDATE = "Test to update";
-    static final long ID_LONG = 69L;
-    static final int ID_INT = 69;
+public class CommentServiceTest implements WithAssertions {
+    public static final String TEST_CONTENT = "Test content";
+    public static final String TEST_TO_UPDATE = "Test to update";
+    public static final long ID_LONG = 69L;
+    public static final int ID_INT = 69;
     @Mock
     CommentRepository commentRepository;
     @Mock

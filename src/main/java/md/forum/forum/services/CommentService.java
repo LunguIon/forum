@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import md.forum.forum.models.Comment;
-import md.forum.forum.repositorys.CommentRepository;
+import md.forum.forum.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +28,10 @@ public class CommentService {
     public Optional<Comment> getCommentById(Long id) {
         return commentRepository.findById(id);
     }
+    public List<Comment> getCommentsByPostId(Long postId) {
+        return commentRepository.findAllByPostId(postId);
+    }
+
     public List<Comment> getCommentsByPostId(Long postId) {
         return commentRepository.findAllByPostId(postId);
     }

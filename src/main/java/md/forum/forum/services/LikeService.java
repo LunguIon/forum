@@ -4,10 +4,10 @@ import md.forum.forum.models.Comment;
 import md.forum.forum.models.Like;
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;
-import md.forum.forum.repositorys.CommentRepository;
-import md.forum.forum.repositorys.LikeRepository;
-import md.forum.forum.repositorys.PostRepository;
-import md.forum.forum.repositorys.UserRepository;
+import md.forum.forum.repository.CommentRepository;
+import md.forum.forum.repository.LikeRepository;
+import md.forum.forum.repository.PostRepository;
+import md.forum.forum.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class LikeService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Like> findAll(){
+    public List<Like> findAll() {
         return likeRepository.findAll();
     }
     public List<Like> findAllByUser(String userEmail) {

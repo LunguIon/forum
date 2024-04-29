@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private String imageUrlProfile;
     @Column(name = "create_date")
     private Date createDate;
-    @JoinColumn(name = "id_role",foreignKey = @ForeignKey(name="fk_user_role"))
+    @JoinColumn(name = "id_role", foreignKey = @ForeignKey(name = "fk_user_role"))
     @ManyToOne()
     private Role role;
     @Column

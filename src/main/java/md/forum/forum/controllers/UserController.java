@@ -56,7 +56,7 @@ public class UserController {
 
     }
 
-    //don't use it !!!!!! for frontend
+
     @PutMapping("/{email}")
     public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User user) {
         User updatedUser = userService.updateUserProfile(email, user);
