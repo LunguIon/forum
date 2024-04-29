@@ -32,10 +32,6 @@ public class CommentService {
         return commentRepository.findAllByPostId(postId);
     }
 
-    public List<Comment> getCommentsByPostId(Long postId) {
-        return commentRepository.findAllByPostId(postId);
-    }
-
     public Comment updateComment(Long id, Comment newComment) {
         return commentRepository.findById(id).map(comment -> {
             comment.setContent(newComment.getContent());
