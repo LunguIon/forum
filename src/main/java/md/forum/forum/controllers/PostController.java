@@ -28,6 +28,7 @@ public class PostController {
         logger.info("getAllPosts returned {} posts", posts.size());
         return ResponseEntity.ok(posts);
     }
+
     @GetMapping("/user/{email}")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable String email) {
         logger.info("getAllPostsByUser was called");
@@ -35,7 +36,6 @@ public class PostController {
         logger.info("getAllPostsByUser was called with email: {}", email);
         return ResponseEntity.ok(posts);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {

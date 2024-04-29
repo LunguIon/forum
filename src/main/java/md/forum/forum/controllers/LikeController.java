@@ -43,12 +43,13 @@ public class LikeController {
         List<Like> likes = likeService.findAllByUser(userEmail);
         logger.info("Found {} likes by user email: {}", likes.size(), userEmail);
         if (!likes.isEmpty()) {
+            logger.info("Found {} likes", likes.size());
             return ResponseEntity.ok(likes);
         }
         else {
+            logger.info("No likes found");
             return ResponseEntity.noContent().build();
         }
-
     }
 
     // Endpoint to find all likes for a specific post, useless rn
@@ -56,11 +57,12 @@ public class LikeController {
     public ResponseEntity<List<Like>> findAllByPost(@PathVariable("postId") int postId) {
         logger.info("Find all likes by post id: {}", postId);
         List<Like> likes = likeService.findAllByPost(postId);
-        logger.info("Found {} likes by post id: {}", likes.size(), postId);
         if (!likes.isEmpty()) {
+            logger.info("Found {} likes by post id: {}", likes.size(), postId);
             return ResponseEntity.ok(likes);
         }
         else {
+            logger.info("No likes found");
             return ResponseEntity.noContent().build();
         }
     }
@@ -71,6 +73,7 @@ public class LikeController {
         logger.info("Find all likes without comments");
         List<Like> likes = likeService.findAllForPost();
         if (!likes.isEmpty()) {
+            logger.info("Found {} likes without comments", likes.size());
             return ResponseEntity.ok(likes);
         }
         else {
@@ -82,9 +85,9 @@ public class LikeController {
     // Endpoint to find all likes for a specific post with no comments
     @GetMapping("/post/{postId}/withoutComments")
     public ResponseEntity<List<Like>> findAllForPostWithoutComments(@PathVariable("postId") int postId) {
-        logger.info("Find all likes without comments for post id: {}", postId);
         List<Like> likes = likeService.findAllByPost(postId);
         if (!likes.isEmpty()) {
+            logger.info("Found {} likes without comments for post id: {}", likes.size(), postId);
             return ResponseEntity.ok(likes);
         }
         else {
@@ -99,8 +102,8 @@ public class LikeController {
     public ResponseEntity<List<Like>> findAllForComments() {
         logger.info("Find all likes For comments");
         List<Like> likes = likeService.findAllForComments();
-        logger.info("Found {} likes For comments", likes.size());
         if (!likes.isEmpty()) {
+            logger.info("Found {} likes For comments", likes.size());
             return ResponseEntity.ok(likes);
         }
         else{
@@ -115,7 +118,6 @@ public class LikeController {
     public ResponseEntity<List<Like>>findAllForComments(@PathVariable("commentId") int commentId) {
         logger.info("Find all likes for comment id: {}", commentId);
         List<Like> likes = likeService.findAllForComments(commentId);
-
         if (!likes.isEmpty()) {
             logger.info("Found {} likes for comment id: {}", likes.size(), commentId);
             return ResponseEntity.ok(likes);

@@ -2,6 +2,7 @@ package md.forum.forum.services;
 
 
 
+import lombok.RequiredArgsConstructor;
 import md.forum.forum.models.Post;
 import md.forum.forum.repositorys.PostRepository;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
-    public PostService(PostRepository postRepository, UserService userService) {
-        this.postRepository = postRepository;
-        this.userService = userService;
-    }
 
 
     public Post createPost(Post post) {

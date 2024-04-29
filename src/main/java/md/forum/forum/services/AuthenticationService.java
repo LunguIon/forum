@@ -2,6 +2,7 @@ package md.forum.forum.services;
 
 
 
+import lombok.RequiredArgsConstructor;
 import md.forum.forum.dto.LoginUserDto;
 import md.forum.forum.dto.RegisterUserDto;
 import md.forum.forum.models.User;
@@ -12,16 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-    }
     public User signUp(RegisterUserDto registerUserDto) {
         User user = new User();
         user.setUsername(registerUserDto.getUsername());

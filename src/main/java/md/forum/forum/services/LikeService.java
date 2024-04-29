@@ -1,5 +1,6 @@
 package md.forum.forum.services;
 
+import lombok.RequiredArgsConstructor;
 import md.forum.forum.models.Comment;
 import md.forum.forum.models.Like;
 import md.forum.forum.models.Post;
@@ -14,17 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class LikeService {
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    public LikeService(LikeRepository likeRepository, UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository) {
-        this.likeRepository = likeRepository;
-        this.userRepository = userRepository;
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-    }
+
 
     public List<Like> findAll(){
         return likeRepository.findAll();
