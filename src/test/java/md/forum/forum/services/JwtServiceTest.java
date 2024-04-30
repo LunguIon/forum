@@ -1,8 +1,11 @@
 package md.forum.forum.services;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import md.forum.forum.security.service.JwtService;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,16 +18,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.Mockito.when;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 class JwtServiceTest implements WithAssertions {
     public static final String TEST_USER = "testUser";
     public static final String WRONG_USER = "wrongUser";
-    public static final String ROLE = "role";
-    public static final String ADMIN = "admin";
+
     @Mock
     UserDetails userDetails;
 
@@ -39,53 +39,58 @@ class JwtServiceTest implements WithAssertions {
 
         long jwtExpiration = 3600000;
         ReflectionTestUtils.setField(jwtService, "jwtExpiration", jwtExpiration);
-
-        when(userDetails.getUsername()).thenReturn(TEST_USER);
     }
 
     @Test
     void testIsTokenValid_withValidToken() {
-        assertThat(jwtService.isTokenValid(jwtService.generateToken(userDetails), userDetails)).isTrue();
+        when(userDetails.getUsername()).thenReturn(TEST_USER);
+        String token = jwtService.generateToken(TEST_USER);
+        assertThat(jwtService.isTokenValid(token, userDetails)).isTrue();
     }
 
     @Test
     void testIsTokenValid_withInvalidUsername() {
-        String token = jwtService.generateToken(userDetails);
+        when(userDetails.getUsername()).thenReturn(TEST_USER);
+        String token = jwtService.generateToken(TEST_USER);
         when(userDetails.getUsername()).thenReturn(WRONG_USER);
-
         assertThat(jwtService.isTokenValid(token, userDetails)).isFalse();
     }
 
     @Test
     void testExtractUsername() {
-        String token = jwtService.generateToken(userDetails);
-
+        String token = jwtService.generateToken(TEST_USER);
         assertThat(jwtService.extractUsername(token)).isEqualTo(TEST_USER);
     }
 
     @Test
     void testExtractClaim() {
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(TEST_USER);
         assertThat(jwtService.extractClaim(token, Claims::getIssuedAt)).isNotNull();
     }
 
     @Test
-    void testGenerateTokenWithClaims() {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(ROLE, ADMIN);
-
-        String token = jwtService.generateToken(claims, userDetails);
-
-        assertThat(ADMIN).isEqualTo(jwtService.extractClaim(token, c -> c.get(ROLE, String.class)));
-        assertThat(jwtService.isTokenValid(token, userDetails)).isTrue();
+    void testIsTokenExpired() throws InterruptedException {
+        long shortJwtExpiration = 1000;
+        ReflectionTestUtils.setField(jwtService, "jwtExpiration", shortJwtExpiration);
+        String token = jwtService.generateToken(TEST_USER);
+        Thread.sleep(1001);
+        try {
+            assertThat(jwtService.isTokenValid(token, userDetails)).isFalse();
+        } catch (ExpiredJwtException e) {
+            assertThat(e).isInstanceOf(ExpiredJwtException.class);
+        }
     }
 
     @Test
-    void testEmptyClaims() {
-        String token = jwtService.generateToken(new HashMap<>(), userDetails);
-
-        assertThat(jwtService.generateToken(new HashMap<>(), userDetails)).isNotNull();
-        assertThat(jwtService.isTokenValid(token,userDetails)).isTrue();
+    void testTokenValidityWithChangedSecretKey() {
+        String token = jwtService.generateToken(TEST_USER);
+        byte[] newKeyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
+        String newBase64Secret = Base64.getEncoder().encodeToString(newKeyBytes);
+        ReflectionTestUtils.setField(jwtService, "secretKey", newBase64Secret);
+        try {
+            assertThat(jwtService.isTokenValid(token, userDetails)).isFalse();
+        } catch (SignatureException e) {
+            assertThat(e).isInstanceOf(SignatureException.class);
+        }
     }
 }
-
