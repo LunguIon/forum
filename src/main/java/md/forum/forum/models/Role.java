@@ -1,4 +1,5 @@
 package md.forum.forum.models;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
 import md.forum.forum.models.Comment;
-import md.forum.forum.repositorys.CommentRepository;
+import md.forum.forum.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

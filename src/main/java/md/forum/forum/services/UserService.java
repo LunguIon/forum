@@ -2,7 +2,7 @@ package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
 import md.forum.forum.models.User;
-import md.forum.forum.repositorys.UserRepository;
+import md.forum.forum.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class UserService {
     public User createUser(User user) {
         try {
             return userRepository.save(user);
-        }catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists", ex);
         }
     }
@@ -32,18 +32,22 @@ public class UserService {
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
-    public Optional<User>getUserByEmail(String email) {
+
+    public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
     public User updateUserPassword(String email, String password) {
-        return userRepository.findByEmail(email).map(user->{
+        return userRepository.findByEmail(email).map(user -> {
             user.setPasswordHash(password);
             return userRepository.save(user);
         }).orElse(null);
     }
+
     public User banUser(String email) {
         return userRepository.findByEmail(email).map(user -> {
             user.setBanned(true);
@@ -59,10 +63,11 @@ public class UserService {
             return userRepository.save(user);
         }).orElse(null);
     }
+
     public boolean updateUserUsername(String email, String newUsername) {
         User user = userRepository.findByEmail(email).orElse(null);
-        if(user != null) {
-            if(newUsername != null) {
+        if (user != null) {
+            if (newUsername != null) {
                 user.setUsername(newUsername);
                 userRepository.save(user);
                 return true;
@@ -72,10 +77,11 @@ public class UserService {
         return false;
 
     }
+
     public boolean updateUserProfileImage(String email, String newImageUrl) {
         User user = userRepository.findByEmail(email).orElse(null);
-        if(user != null) {
-            if(newImageUrl != null) {
+        if (user != null) {
+            if (newImageUrl != null) {
                 user.setImageUrlProfile(newImageUrl);
                 userRepository.save(user);
                 return true;

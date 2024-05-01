@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import md.forum.forum.models.Comment;
-import md.forum.forum.repositorys.CommentRepository;
+import md.forum.forum.repository.CommentRepository;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,18 +22,18 @@ public class CommentServiceTest implements WithAssertions {
     public static final long ID_LONG = 69L;
     public static final int ID_INT = 69;
     @Mock
-    private CommentRepository commentRepository;
+    CommentRepository commentRepository;
     @Mock
-    private Comment comment;
+    Comment comment;
     @Mock
-    private Comment commentSecond;
+    Comment commentSecond;
     @InjectMocks
-    private CommentService commentService;
+    CommentService commentService;
     @Mock
-    private Date date;
+    Date date;
 
     @Test
-    public void testCreateComment() {
+    void testCreateComment() {
         when(comment.getId()).thenReturn(ID_INT);
         when(comment.getContent()).thenReturn(TEST_CONTENT);
         when(commentRepository.save(comment)).thenReturn(comment);
@@ -47,7 +47,7 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testGetAllComments() {
+    void testGetAllComments() {
         when(commentRepository.findAll()).thenReturn(List.of(comment, commentSecond));
 
         assertThat(commentService.getAllComments()).hasSize(2)
@@ -57,13 +57,12 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testGetCommentById_Found() {
+    void testGetCommentById_Found() {
         when(comment.getId()).thenReturn(ID_INT);
         when(comment.getContent()).thenReturn(TEST_CONTENT);
         when(commentRepository.findById((long) comment.getId())).thenReturn(Optional.of(comment));
 
-        Optional<Comment> foundComment = commentService.getCommentById((long) comment.getId());
-        assertThat(foundComment)
+        assertThat(commentService.getCommentById((long) comment.getId()))
                 .isPresent()
                 .get()
                 .extracting(Comment::getContent)
@@ -72,13 +71,13 @@ public class CommentServiceTest implements WithAssertions {
         verify(commentRepository, times(1)).findById((long) comment.getId());
     }
 
-    @Test void testGetCommentById_NotFound() {
-        Optional<Comment> foundComment = commentService.getCommentById((long) comment.getId());
-        assertThat(foundComment).isEmpty();
+    @Test
+    void testGetCommentById_NotFound() {
+        assertThat(commentService.getCommentById((long) comment.getId())).isEmpty();
     }
 
     @Test
-    public void testUpdateComment() {
+    void testUpdateComment() {
         when(commentRepository.findById(ID_LONG)).thenReturn(Optional.of(comment));
         when(commentSecond.getContent()).thenReturn(TEST_TO_UPDATE);
         when(commentSecond.getNumberOfLikes()).thenReturn(2);
@@ -94,7 +93,7 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testUpdateComment_EmptyId() {
+    void testUpdateComment_EmptyId() {
         when(commentRepository.findById(ID_LONG)).thenReturn(Optional.empty());
 
         assertThat(commentService.updateComment(ID_LONG, commentSecond))
@@ -105,7 +104,7 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testUpdateComment_NullId() {
+    void testUpdateComment_NullId() {
         assertThat(commentService.updateComment(null, commentSecond))
                 .isNull();
 
@@ -113,10 +112,10 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testUpdateComment_NullNewComment() {
+    void testUpdateComment_NullNewComment() {
         when(commentRepository.findById(ID_LONG)).thenReturn(Optional.of(comment));
 
-        assertThatThrownBy(()->commentService.updateComment(ID_LONG, null))
+        assertThatThrownBy(() -> commentService.updateComment(ID_LONG, null))
                 .isInstanceOf(NullPointerException.class);
 
         verify(commentRepository).findById(ID_LONG);
@@ -124,7 +123,7 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testDeleteComment() {
+    void testDeleteComment() {
         when(commentRepository.existsById(ID_LONG)).thenReturn(true);
         doNothing().when(commentRepository).deleteById(ID_LONG);
 
@@ -134,7 +133,7 @@ public class CommentServiceTest implements WithAssertions {
     }
 
     @Test
-    public void testDeleteComment_NotExist() {
+    void testDeleteComment_NotExist() {
         when(commentRepository.existsById(ID_LONG)).thenReturn(false);
 
         assertThat(commentService.deleteComment(ID_LONG)).isFalse();

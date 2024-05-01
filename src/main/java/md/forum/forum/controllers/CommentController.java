@@ -4,9 +4,6 @@ import md.forum.forum.models.Comment;
 import md.forum.forum.services.CommentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
+    private static final Logger logger = LogManager.getLogger(CommentController.class);
     private final CommentService commentService;
-    private static final Logger logger =  LogManager.getLogger(CommentController.class);
 
     public CommentController(CommentService commentService) {
         logger.info("CommentController was initialized");
@@ -36,18 +33,16 @@ public class CommentController {
         List<Comment> comments = commentService.getCommentsByPostId(postId);
         logger.info("getCommentsByPostId returned {} comments", comments.size());
         return ResponseEntity.ok(comments);
-
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
-
         return commentService.getCommentById(id)
                 .map(comment -> {
-                    logger.info("getCommentById was called with id {}",id);
+                    logger.info("getCommentById was called with id {}", id);
                     return ResponseEntity.ok(comment);
                 })
-                .orElseGet(()->{
+                .orElseGet(() -> {
                     commentNotFoundLog(id);
                     return ResponseEntity.notFound().build();
                 });

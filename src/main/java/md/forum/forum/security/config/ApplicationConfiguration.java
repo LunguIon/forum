@@ -1,6 +1,6 @@
-package md.forum.forum.config;
+package md.forum.forum.security.config;
 
-import md.forum.forum.repositorys.UserRepository;
+import md.forum.forum.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
