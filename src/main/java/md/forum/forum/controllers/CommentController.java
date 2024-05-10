@@ -1,5 +1,7 @@
 package md.forum.forum.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import md.forum.forum.models.Comment;
 import md.forum.forum.services.CommentService;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
+@Tag(name = "Comment controller methods")
 public class CommentController {
     private static final Logger logger = LogManager.getLogger(CommentController.class);
     private final CommentService commentService;
@@ -20,6 +23,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @Operation(summary = "Get all comments")
     @GetMapping
     public ResponseEntity<List<Comment>> getAllComments() {
         logger.info("getAllComments was called");
@@ -27,6 +31,7 @@ public class CommentController {
         logger.info("getAllComments returned {} comments", comments.size());
         return ResponseEntity.ok(comments);
     }
+    @Operation(summary = "Get comments by post ID")
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
         logger.info("getCommentsByPostId was called");
@@ -35,6 +40,7 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    @Operation(summary = "Get comment by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
         return commentService.getCommentById(id)
@@ -48,6 +54,7 @@ public class CommentController {
                 });
     }
 
+    @Operation(summary = "Create new comment")
     @PostMapping
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
         logger.info("createComment was called");
@@ -62,6 +69,7 @@ public class CommentController {
         }
     }
 
+    @Operation(summary = "Update comment by ID")
     @PutMapping("/{id}")
     public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Comment comment) {
         logger.info("updateComment was called");
@@ -75,6 +83,7 @@ public class CommentController {
         }
     }
 
+    @Operation(summary = "Delete comment by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         logger.info("deleteComment was called");
