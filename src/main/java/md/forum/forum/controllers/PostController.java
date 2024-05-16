@@ -1,5 +1,7 @@
 package md.forum.forum.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import md.forum.forum.models.Post;
 import md.forum.forum.services.PostService;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
+@Tag(name = "Post controller methods")
 public class PostController {
     private static final Logger logger = LogManager.getLogger(PostController.class);
     private final PostService postService;
@@ -21,6 +24,7 @@ public class PostController {
         this.postService = postService;
     }
 
+    @Operation(summary = "Find all posts")
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         logger.info("getAllPosts was called");
@@ -29,6 +33,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @Operation(summary = "Find all posts by user's email")
     @GetMapping("/user/{email}")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable String email) {
         logger.info("getAllPostsByUser was called");
@@ -37,6 +42,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @Operation(summary = "Find post by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         logger.info("getPostById was called");
@@ -51,6 +57,7 @@ public class PostController {
                 });
     }
 
+    @Operation(summary = "Create new post")
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         logger.info("createPost was called");
@@ -64,6 +71,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Update post by ID")
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
         Post updatedPost = postService.updatePost(id, post);
@@ -77,6 +85,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Delete post by ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         logger.info("deletePost was called with id: {}", id);

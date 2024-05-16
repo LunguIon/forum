@@ -1,5 +1,7 @@
 package md.forum.forum.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import md.forum.forum.models.User;
 import md.forum.forum.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User controller methods")
 public class UserController {
     private static final Logger logger = LogManager.getLogger(UserController.class);
     private final UserService userService;
@@ -20,6 +23,7 @@ public class UserController {
         logger.info("UserController was initialized");
     }
 
+    @Operation(summary = "Find all users")
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         logger.info("getAllUsers was called");
@@ -28,6 +32,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @Operation(summary = "Find user by email")
     @GetMapping("/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         logger.info("getUserByEmail called for email: {}", email);
@@ -42,6 +47,7 @@ public class UserController {
                 });
     }
 
+    @Operation(summary = "Create new user")
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
@@ -56,7 +62,7 @@ public class UserController {
 
     }
 
-
+    @Operation(summary = "Update user by email")
     @PutMapping("/{email}")
     public ResponseEntity<User> updateUser(@PathVariable String email, @RequestBody User user) {
         User updatedUser = userService.updateUserProfile(email, user);
@@ -68,6 +74,8 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Update user's password by email")
     @PutMapping("/{email}/password")
     public ResponseEntity<User> updateUserPassword(@PathVariable String email, @RequestParam String password) {
         User updatedUser = userService.updateUserPassword(email, password);
@@ -81,6 +89,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Ban user by email")
     @PutMapping("/{email}/ban")
     public ResponseEntity<User> banUser(@PathVariable String email) {
         User bannedUser = userService.banUser(email);
@@ -94,6 +103,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Update user's username by email")
     @PutMapping("/{email}/username")
     public ResponseEntity<Boolean> updateUserUsername(@PathVariable String email, @RequestParam String newUsername) {
         boolean updated = userService.updateUserUsername(email, newUsername);
@@ -107,6 +117,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Update user's profile image by email")
     @PutMapping("/{email}/profileImage")
     public ResponseEntity<Boolean> updateUserProfileImage(@PathVariable String email, @RequestParam String newImageUrl) {
         boolean updated = userService.updateUserProfileImage(email, newImageUrl);
@@ -120,6 +131,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Delete user by email")
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable String email) {
         boolean deleted = userService.deleteUser(email);
