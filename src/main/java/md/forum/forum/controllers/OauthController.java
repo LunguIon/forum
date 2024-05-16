@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
-@RequestMapping("/google")
+@RequestMapping("/oauth")
 public class OauthController {
-    @GetMapping
-    public Object googleAuthentication(Authentication authentication){
+
+    @GetMapping("/google")
+    public Object googleAuthentication(Authentication authentication) {
         return authentication.getPrincipal();
     }
 }
