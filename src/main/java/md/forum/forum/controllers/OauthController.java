@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/google")
+@RequestMapping("/oauth")
 @Tag(name = "OAuth controller")
 public class OauthController {
     @Operation(summary = "Google Authentication")
-    @GetMapping
-    public Object googleAuthentication(Authentication authentication){
+    @GetMapping("/google")
+    public Object googleAuthentication(Authentication authentication) {
         return authentication.getPrincipal();
     }
 }
