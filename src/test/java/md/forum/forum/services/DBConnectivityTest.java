@@ -13,10 +13,10 @@ import java.sql.Connection;
 public class DBConnectivityTest {
 
     @Autowired
-    private DataSource dataSource;
+    DataSource dataSource;
 
     @MockBean
-    private JwtService jwtService;
+    JwtService jwtService;
 
     @Test
     public void testConnection() throws Exception {

@@ -1,5 +1,6 @@
 package md.forum.forum.services;
 
+import lombok.RequiredArgsConstructor;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,13 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public User createUser(User user) {
         try {

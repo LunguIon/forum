@@ -1,5 +1,7 @@
 package md.forum.forum.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import md.forum.forum.models.Like;
 import md.forum.forum.services.LikeService;
 import org.apache.logging.log4j.LogManager;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/likes")
+@Tag(name = "Like controller methods")
 public class LikeController {
     private final LikeService likeService;
     Logger logger = LogManager.getLogger(LikeController.class);
@@ -25,6 +28,7 @@ public class LikeController {
 
     }
 
+    @Operation(summary = "Get all likes")
     @GetMapping
     public ResponseEntity<List<Like>> getAllLikes() {
         logger.info("Get all likes");
@@ -37,6 +41,7 @@ public class LikeController {
         return ResponseEntity.ok(likes);
     }
     // Endpoint to find all likes by a specific user
+    @Operation(summary = "Find all likes by a specific user")
     @GetMapping("/user/{userEmail}")
     public ResponseEntity<List<Like>> findAllByUser(@PathVariable("userEmail") String userEmail) {
         logger.info("Find all likes by user email: {}", userEmail);
@@ -51,6 +56,7 @@ public class LikeController {
     }
 
     // Endpoint to find all likes for a specific post, useless rn
+    @Operation(summary = "Find all likes for a specific post")
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<Like>> findAllByPost(@PathVariable("postId") int postId) {
         logger.info("Find all likes by post id: {}", postId);
@@ -65,6 +71,7 @@ public class LikeController {
     }
 
     // Endpoint to find all likes for posts with no comments, useless rn
+    @Operation(summary = "Find all likes for posts with no comments")
     @GetMapping("/post/withoutComments")
     public ResponseEntity<List<Like>> findAllForPostWithoutComments() {
         logger.info("Find all likes without comments");
@@ -78,6 +85,7 @@ public class LikeController {
     }
 
     // Endpoint to find all likes for a specific post with no comments
+    @Operation(summary = "Find all likes for a specific post")
     @GetMapping("/post/{postId}/withoutComments")
     public ResponseEntity<List<Like>> findAllForPostWithoutComments(@PathVariable("postId") int postId) {
         logger.info("Find all likes without comments for post id: {}", postId);
@@ -92,6 +100,7 @@ public class LikeController {
     }
 
     // Endpoint to find all likes for comments, useless rn
+    @Operation(summary = "Find all likes for comments")
     @GetMapping("/comments")
     public ResponseEntity<List<Like>> findAllForComments() {
         logger.info("Find all likes For comments");
@@ -106,6 +115,7 @@ public class LikeController {
     }
 
     // Endpoint to find all likes for a specific comment
+    @Operation(summary = "Find all likes for a specific comment")
     @GetMapping("/comments/{commentId}")
     public ResponseEntity<List<Like>> findAllForComments(@PathVariable("commentId") int commentId) {
         logger.info("Find all likes for comment id: {}", commentId);
@@ -119,5 +129,4 @@ public class LikeController {
             return ResponseEntity.noContent().build();
         }
     }
-
 }

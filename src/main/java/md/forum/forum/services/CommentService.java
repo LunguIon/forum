@@ -1,5 +1,6 @@
 package md.forum.forum.services;
 
+import lombok.RequiredArgsConstructor;
 import md.forum.forum.models.Comment;
 import md.forum.forum.repository.CommentRepository;
 import org.springframework.stereotype.Service;
@@ -8,12 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CommentService {
+@RequiredArgsConstructor
+public class  CommentService {
     private final CommentRepository commentRepository;
-
-    public CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
 
 
     public Comment createComment(Comment comment) {
