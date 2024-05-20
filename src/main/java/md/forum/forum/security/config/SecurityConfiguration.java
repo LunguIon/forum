@@ -30,7 +30,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users", "/auth/**","/test")
+                        .requestMatchers("/users", "/auth/**", "/test")
                         .permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
@@ -39,10 +39,10 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
-                        .configurationSource(corsConfigurationSource())
-                );
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
+//                        .configurationSource(corsConfigurationSource())
+//                );
         return http.build();
     }
 
