@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RestController
 @Tag(name = "Authentication controller methods")
+@CrossOrigin(origins = "https://speakapi.lol")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
