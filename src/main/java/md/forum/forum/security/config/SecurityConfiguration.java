@@ -35,7 +35,8 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oauth2UserService)))
+                                .userService(oauth2UserService))
+                        .successHandler(customOAuth2LoginSuccessHandler))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authenticationProvider(authenticationProvider)
