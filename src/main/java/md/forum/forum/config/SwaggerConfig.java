@@ -16,7 +16,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .servers(
                         List.of(
-                                new Server().url("https://speakup.lol")
+                                new Server().url("https://speakapi.lol")
                         )
                 )
                 .info(

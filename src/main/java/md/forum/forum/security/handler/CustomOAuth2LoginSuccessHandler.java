@@ -13,7 +13,7 @@ import java.io.IOException;
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        setDefaultTargetUrl("https://speakapi.lol");
+        setDefaultTargetUrl("https://speakup.lol");
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }
