@@ -1,6 +1,7 @@
 package md.forum.forum.security.config;
 
 import lombok.RequiredArgsConstructor;
+import md.forum.forum.security.handler.CustomOAuth2LoginFailureHandler;
 import md.forum.forum.security.handler.CustomOAuth2LoginSuccessHandler;
 import md.forum.forum.security.service.OAuth2UserService;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2UserService oauth2UserService;
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
+    private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,7 +41,8 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oauth2UserService))
-                        .successHandler(customOAuth2LoginSuccessHandler))
+                        .successHandler(customOAuth2LoginSuccessHandler)
+                        .failureHandler(customOAuth2LoginFailureHandler))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authenticationProvider(authenticationProvider)
