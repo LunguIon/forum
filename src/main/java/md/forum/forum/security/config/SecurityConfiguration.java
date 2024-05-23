@@ -33,9 +33,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/test")
-                        .permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/auth/**","/test","oauth/google")
+                        .anonymous()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfo -> userInfo
@@ -65,6 +66,8 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
 
 
 
