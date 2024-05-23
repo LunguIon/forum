@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**","/oauth/google")
                         .anonymous()
-                        .requestMatchers("/test","/test/put")
+                        .requestMatchers("/test","/test/put","/users/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
