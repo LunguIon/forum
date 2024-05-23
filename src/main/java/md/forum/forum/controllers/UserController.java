@@ -9,8 +9,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 @RestController
 @RequestMapping("/users")
 @Tag(name = "User controller methods")
@@ -143,5 +147,19 @@ public class UserController {
             logger.error("User: {} deletion failed: ", email);
             return ResponseEntity.notFound().build();
         }
+    }
+    @PostMapping(
+            value = "{userEmail}/profile-image",
+            consumes = MULTIPART_FORM_DATA_VALUE
+    )
+    public void uploadUserProfileImage(@PathVariable("userEmail") String userEmail,
+                                       @RequestParam("file") MultipartFile file) {
+        userService.uploadUserProfileImage(userEmail, file);
+
+    }
+    @GetMapping("{userEmail}/profile-image"    )
+    public byte [] uploadUserProfileImage(@PathVariable("userEmail") String userEmail) {
+        return userService.getUserPrfileImage(userEmail);
+
     }
 }

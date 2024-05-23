@@ -33,8 +33,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/test","oauth/google")
+                        .requestMatchers("/auth/**","/oauth/google")
                         .anonymous()
+                        .requestMatchers("/test","/test/put")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 )
