@@ -11,5 +11,6 @@ public class SimplifiedPostDTO {
         private String title;
         private String content;
         private String imageURL;
+        private String topicTitle;
 
 }

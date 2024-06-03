@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
@@ -18,15 +19,19 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     List<Like> findAllByPost(Post post);
 
-    @Query("SELECT l FROM likes l where l.comments is null")
+    @Query("SELECT l FROM likes l where l.comment is null")
     List<Like> findAllForPost();
 
-    @Query("SELECT l FROM likes l where l.comments is null and l.post = :post")
+    @Query("SELECT l FROM likes l where l.comment is null and l.post = :post")
     List<Like> findAllForPost(@Param("post") Post post);
 
-    @Query("SELECT l FROM likes l where l.comments is not null")
+    @Query("SELECT l FROM likes l where l.comment is not null")
     List<Like> findAllForComments();
 
-    @Query("SELECT l FROM likes l WHERE l.comments IS NOT NULL AND l.comments = :comment")
+    @Query("SELECT l FROM likes l WHERE l.comment IS NOT NULL AND l.comment = :comment")
     List<Like> findAllForCommentsBy(@Param("comment") Comment comment);
+
+    //UUID
+    Optional<Like> findByLikeId(String likeId);
+    void deleteByLikeId(String likeId);
 }

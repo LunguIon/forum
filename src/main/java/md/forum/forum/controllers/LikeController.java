@@ -2,18 +2,18 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import md.forum.forum.dto.SimplifiedLikeDTO;
 import md.forum.forum.models.Like;
 import md.forum.forum.services.LikeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/likes")
@@ -35,7 +35,7 @@ public class LikeController {
         List<Like> likes = likeService.findAll();
         if (likes.isEmpty()) {
             logger.info("No likes found");
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         logger.info("Found {} likes", likes.size());
         return ResponseEntity.ok(likes);
@@ -58,7 +58,7 @@ public class LikeController {
     // Endpoint to find all likes for a specific post, useless rn
     @Operation(summary = "Find all likes for a specific post")
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<Like>> findAllByPost(@PathVariable("postId") int postId) {
+    public ResponseEntity<List<Like>> findAllByPost(@PathVariable("postId") String postId) {
         logger.info("Find all likes by post id: {}", postId);
         List<Like> likes = likeService.findAllByPost(postId);
         logger.info("Found {} likes by post id: {}", likes.size(), postId);
@@ -87,7 +87,7 @@ public class LikeController {
     // Endpoint to find all likes for a specific post with no comments
     @Operation(summary = "Find all likes for a specific post")
     @GetMapping("/post/{postId}/withoutComments")
-    public ResponseEntity<List<Like>> findAllForPostWithoutComments(@PathVariable("postId") int postId) {
+    public ResponseEntity<List<Like>> findAllForPostWithoutComments(@PathVariable("postId") String postId) {
         logger.info("Find all likes without comments for post id: {}", postId);
         List<Like> likes = likeService.findAllByPost(postId);
         if (!likes.isEmpty()) {
@@ -117,7 +117,7 @@ public class LikeController {
     // Endpoint to find all likes for a specific comment
     @Operation(summary = "Find all likes for a specific comment")
     @GetMapping("/comments/{commentId}")
-    public ResponseEntity<List<Like>> findAllForComments(@PathVariable("commentId") int commentId) {
+    public ResponseEntity<List<Like>> findAllForComments(@PathVariable("commentId") String commentId) {
         logger.info("Find all likes for comment id: {}", commentId);
         List<Like> likes = likeService.findAllForComments(commentId);
 
@@ -128,5 +128,30 @@ public class LikeController {
             logger.info("Like for comment id {} was not found", commentId);
             return ResponseEntity.noContent().build();
         }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Like> getLikeById(@PathVariable String id) {
+        Optional<Like> like = likeService.findById(id);
+        return like.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Like> createLike(@RequestBody SimplifiedLikeDTO simplifiedLikeDTO) {
+        Like like = likeService.createLike(simplifiedLikeDTO);
+        return ResponseEntity.ok(like);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Like> updateLike(@PathVariable String id) {
+        Optional<Like> updatedLike = likeService.updateLike(id);
+        return updatedLike.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLike(@PathVariable String id) {
+        likeService.deleteLike(id);
+        return ResponseEntity.noContent().build();
     }
 }

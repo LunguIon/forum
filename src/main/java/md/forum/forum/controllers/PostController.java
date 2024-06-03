@@ -37,17 +37,23 @@ public class PostController {
     @Operation(summary = "Find all posts by user's email")
     @GetMapping("/user/{email}")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable String email) {
-        logger.info("getAllPostsByUser was called");
         List<Post> posts = postService.getPostsByUserName(email);
         logger.info("getAllPostsByUser was called with email: {}", email);
+        return ResponseEntity.ok(posts);
+    }
+    @Operation(summary = "Find all posts by Topic")
+    @GetMapping("/topic/{topic}")
+    public ResponseEntity<List<Post>> getAllPostsByTopic(@PathVariable String topic) {
+        List<Post> posts = postService.getPostsByTopic(topic);
+        logger.info("getAllPostsByTopic was called with topic: {}", topic);
         return ResponseEntity.ok(posts);
     }
 
     @Operation(summary = "Find post by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<Post> getPostById(@PathVariable String id) {
         logger.info("getPostById was called");
-        return postService.getPostById(id)
+        return postService.getPostByPostId(id)
                 .map(post -> {
                     logger.info("getPostById was called with id: {}", id);
                     return ResponseEntity.ok(post);
@@ -61,24 +67,22 @@ public class PostController {
     @Operation(summary = "Create new post")
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody SimplifiedPostDTO simplifiedPostDTO) {
-        logger.info("createPost was called");
         Post createdPost = postService.createPost(simplifiedPostDTO);
         if (createdPost == null) {
             logger.info("Post was not created");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
-            logger.info("Post was created with id: {}", createdPost.getId());
+            logger.info("Post was created with id: {}", createdPost.getPostId());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
         }
     }
 
     @Operation(summary = "Update post by ID")
     @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
-        Post updatedPost = postService.updatePost(id, post);
-        logger.info("updatePost was called with id: {}", id);
+    public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody SimplifiedPostDTO simplifiedPostDTO) {
+        Post updatedPost = postService.updatePostByPostId(id, simplifiedPostDTO);
         if (updatedPost != null) {
-            logger.info("Post was updated with id: {}", updatedPost.getId());
+            logger.info("Post was updated with id: {}", updatedPost.getPostId());
             return ResponseEntity.ok(updatedPost);
         } else {
             logger.error("updatePost was not found");
@@ -88,9 +92,8 @@ public class PostController {
 
     @Operation(summary = "Delete post by ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        logger.info("deletePost was called with id: {}", id);
-        boolean deleted = postService.deletePost(id);
+    public ResponseEntity<Void> deletePost(@PathVariable String id) {
+        boolean deleted = postService.deletePostById(id);
         if(deleted){
             logger.info("Post was deleted with id: {}", id);
             return ResponseEntity.noContent().build();

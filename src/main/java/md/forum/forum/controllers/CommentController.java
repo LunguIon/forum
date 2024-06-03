@@ -2,6 +2,7 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import md.forum.forum.dto.SimplifiedCommentDTO;
 import md.forum.forum.models.Comment;
 import md.forum.forum.services.CommentService;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,7 @@ public class CommentController {
     }
     @Operation(summary = "Get comments by post ID")
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable String postId) {
         logger.info("getCommentsByPostId was called");
         List<Comment> comments = commentService.getCommentsByPostId(postId);
         logger.info("getCommentsByPostId returned {} comments", comments.size());
@@ -42,8 +43,8 @@ public class CommentController {
 
     @Operation(summary = "Get comment by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable Long id) {
-        return commentService.getCommentById(id)
+    public ResponseEntity<Comment> getCommentById(@PathVariable String id) {
+        return commentService.getCommentByCommentId(id)
                 .map(comment -> {
                     logger.info("getCommentById was called with id {}", id);
                     return ResponseEntity.ok(comment);
@@ -56,11 +57,11 @@ public class CommentController {
 
     @Operation(summary = "Create new comment")
     @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
+    public ResponseEntity<Comment> createComment(@RequestBody SimplifiedCommentDTO comment) {
         logger.info("createComment was called");
         Comment createdComment = commentService.createComment(comment);
         if(createdComment != null) {
-            logger.info("Comment with id {} was created", createdComment.getId());
+            logger.info("Comment with id {} was created", createdComment.getCommentId());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
         }
         else {
@@ -71,7 +72,7 @@ public class CommentController {
 
     @Operation(summary = "Update comment by ID")
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> updateComment(@PathVariable String id, @RequestBody SimplifiedCommentDTO comment) {
         logger.info("updateComment was called");
         Comment updatedComment = commentService.updateComment(id, comment);
         if (updatedComment != null) {
@@ -85,7 +86,7 @@ public class CommentController {
 
     @Operation(summary = "Delete comment by ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComment(@PathVariable String id) {
         logger.info("deleteComment was called");
         boolean deleted = commentService.deleteComment(id);
         if (deleted){
@@ -98,7 +99,7 @@ public class CommentController {
         }
 
     }
-    public void commentNotFoundLog(Long id){
+    public void commentNotFoundLog(String id){
         logger.error("Comment with id {} was not found", id);
     }
 }
