@@ -2,6 +2,7 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import md.forum.forum.dto.SimplifiedPostDTO;
 import md.forum.forum.models.Post;
 import md.forum.forum.services.PostService;
 import org.apache.logging.log4j.LogManager;
@@ -59,9 +60,9 @@ public class PostController {
 
     @Operation(summary = "Create new post")
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@RequestBody SimplifiedPostDTO simplifiedPostDTO) {
         logger.info("createPost was called");
-        Post createdPost = postService.createPost(post);
+        Post createdPost = postService.createPost(simplifiedPostDTO);
         if (createdPost == null) {
             logger.info("Post was not created");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

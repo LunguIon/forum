@@ -2,7 +2,9 @@ package md.forum.forum.services;
 
 
 
+import md.forum.forum.dto.SimplifiedPostDTO;
 import md.forum.forum.models.Post;
+import md.forum.forum.models.User;
 import md.forum.forum.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,16 @@ public class PostService {
 
     public Post createPost(Post post) {
         return postRepository.save(post);
+    }
+    public Post createPost(SimplifiedPostDTO simplifiedPostDTO) {
+        Post post = new Post();
+        post.setTitle(simplifiedPostDTO.getTitle());
+        post.setContent(simplifiedPostDTO.getContent());
+        post.setImageURL(simplifiedPostDTO.getImageURL());
+        User user = userService.getUserByEmail(simplifiedPostDTO.getEmail()).orElseThrow();
+        post.setUser(user);
+        return postRepository.save(post);
+
     }
 
 
