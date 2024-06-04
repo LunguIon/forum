@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
-import md.forum.forum.dto.LoginUserDto;
-import md.forum.forum.dto.RegisterUserDto;
+import md.forum.forum.dto.auth.LoginUserDto;
+import md.forum.forum.dto.auth.RegisterUserDto;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
 import md.forum.forum.security.service.AuthenticationService;

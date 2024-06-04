@@ -1,6 +1,8 @@
 package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
+import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.mappers.UserDTOMapper;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
 import md.forum.forum.s3.S3Buckets;
@@ -14,8 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final S3Service s3Service;
     private final S3Buckets s3Buckets;
-
+    private final UserDTOMapper userDTOMapper;
     public User createUser(User user) {
         try {
             return userRepository.save(user);
@@ -33,20 +37,30 @@ public class UserService {
         }
     }
     
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-    public Optional<User> getUserByEmail(String email) {
+    public Optional<UserDTO> getUserByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email)
+                .map(userDTOMapper)
+                .orElseThrow(() -> new NoSuchElementException("User with email [%s] was not found!".formatted(email)
+                )));
+    }
+    public Optional<User> getUserByEmailFull(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserDTO> getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(userDTOMapper);
     }
 
     public User updateUserPassword(String email, String password) {

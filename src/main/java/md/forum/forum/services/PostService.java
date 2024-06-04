@@ -2,7 +2,9 @@ package md.forum.forum.services;
 
 
 
-import md.forum.forum.dto.SimplifiedPostDTO;
+import md.forum.forum.dto.get.GetPostDTO;
+import md.forum.forum.dto.mappers.PostDTOMapper;
+import md.forum.forum.dto.simplified.SimplifiedPostDTO;
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.PostRepository;
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -20,10 +23,13 @@ public class PostService {
     private final UserService userService;
     private final TopicService topicService;
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public PostService(PostRepository postRepository, UserService userService, TopicService topicService) {
+    private final PostDTOMapper postDTOMapper;
+
+    public PostService(PostRepository postRepository, UserService userService, TopicService topicService, PostDTOMapper postDTOMapper) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.topicService = topicService;
+        this.postDTOMapper = postDTOMapper;
     }
 
 
@@ -37,32 +43,45 @@ public class PostService {
         post.setTitle(simplifiedPostDTO.getTitle());
         post.setContent(simplifiedPostDTO.getContent());
         post.setImageURL(simplifiedPostDTO.getImageURL());
-        post.setTopic(topicService.findTopicByTitle(simplifiedPostDTO.getTopicTitle()).orElse(null));
+        post.setTopic(topicService.findTopicByTitleFull(simplifiedPostDTO.getTopicTitle()).orElse(null));
         post.setCreateDate(Date.valueOf(dtf.format(now)));
-        User user = userService.getUserByEmail(simplifiedPostDTO.getEmail()).orElseThrow();
+        User user = userService.getUserByEmailFull(simplifiedPostDTO.getEmail()).orElseThrow();
         post.setUser(user);
         return postRepository.save(post);
 
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<GetPostDTO> getAllPosts() {
+        return postRepository.findAll()
+                .stream()
+                .map(postDTOMapper)
+                .collect(Collectors.toList());
     }
 
     public Optional<Post> getPostById(Long id) {
         return postRepository.findById(id);
     }
-    public Optional<Post> getPostByPostId(String postId) {
+    public Optional<GetPostDTO> getPostByPostId(String postId) {
+        return postRepository.findPostByPostId(postId)
+                .map(postDTOMapper);
+    }
+    public Optional<Post> getPostByPostIdFull(String postId) {
         return postRepository.findPostByPostId(postId);
     }
 
 
-    public List<Post> getPostsByUserName(String email) {
-        return postRepository.findAllByUser(userService.getUserByEmail(email).orElseThrow());
+    public List<GetPostDTO> getPostsByUserName(String email) {
+        return postRepository.findAllByUser(userService.getUserByEmailFull(email).orElseThrow())
+                .stream()
+                .map(postDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public List<Post> getPostsByTopic(String topicTitle) {
-        return postRepository.findAllByTopic(topicService.findTopicByTitle(topicTitle).orElseThrow());
+    public List<GetPostDTO> getPostsByTopic(String topicTitle) {
+        return postRepository.findAllByTopic(topicService.findTopicByTitleFull(topicTitle).orElseThrow())
+                .stream()
+                .map(postDTOMapper)
+                .collect(Collectors.toList());
     }
     //Don't
     public Post updatePost(Long id, Post newPost) {
@@ -85,7 +104,7 @@ public class PostService {
             post.setContent(newPost.getContent());
             post.setUpdateDate(Date.valueOf(dtf.format(now)));
             post.setImageURL(newPost.getImageURL());
-            post.setTopic(topicService.findTopicByTitle(newPost.getTopicTitle()).orElse(null));
+            post.setTopic(topicService.findTopicByTitleFull(newPost.getTopicTitle()).orElse(null));
             return postRepository.save(post);
         }).orElse(null);
     }

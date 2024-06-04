@@ -2,7 +2,8 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import md.forum.forum.dto.SimplifiedCommentDTO;
+import md.forum.forum.dto.get.GetCommentDTO;
+import md.forum.forum.dto.simplified.SimplifiedCommentDTO;
 import md.forum.forum.models.Comment;
 import md.forum.forum.services.CommentService;
 import org.apache.logging.log4j.LogManager;
@@ -26,24 +27,24 @@ public class CommentController {
 
     @Operation(summary = "Get all comments")
     @GetMapping
-    public ResponseEntity<List<Comment>> getAllComments() {
+    public ResponseEntity<List<GetCommentDTO>> getAllComments() {
         logger.info("getAllComments was called");
-        List<Comment> comments = commentService.getAllComments();
+        List<GetCommentDTO> comments = commentService.getAllComments();
         logger.info("getAllComments returned {} comments", comments.size());
         return ResponseEntity.ok(comments);
     }
     @Operation(summary = "Get comments by post ID")
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable String postId) {
+    public ResponseEntity<List<GetCommentDTO>> getCommentsByPostId(@PathVariable String postId) {
         logger.info("getCommentsByPostId was called");
-        List<Comment> comments = commentService.getCommentsByPostId(postId);
+        List<GetCommentDTO> comments = commentService.getCommentsByPostId(postId);
         logger.info("getCommentsByPostId returned {} comments", comments.size());
         return ResponseEntity.ok(comments);
     }
 
     @Operation(summary = "Get comment by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable String id) {
+    public ResponseEntity<GetCommentDTO> getCommentById(@PathVariable String id) {
         return commentService.getCommentByCommentId(id)
                 .map(comment -> {
                     logger.info("getCommentById was called with id {}", id);

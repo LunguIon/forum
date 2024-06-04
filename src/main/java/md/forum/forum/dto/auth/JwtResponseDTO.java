@@ -1,4 +1,4 @@
-package md.forum.forum.dto;
+package md.forum.forum.dto.auth;
 
 
 import lombok.AllArgsConstructor;

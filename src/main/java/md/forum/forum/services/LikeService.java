@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
-import md.forum.forum.dto.SimplifiedLikeDTO;
+import md.forum.forum.dto.simplified.SimplifiedLikeDTO;
 import md.forum.forum.models.Comment;
 import md.forum.forum.models.Like;
 import md.forum.forum.models.Post;
@@ -30,6 +30,7 @@ public class LikeService {
     public List<Like> findAll() {
         return likeRepository.findAll();
     }
+
     public List<Like> findAllByUser(String userEmail) {
         Optional<User> user = userRepository.findByEmail(userEmail);
         return likeRepository.findAllByUser(user.orElse(null));
@@ -75,6 +76,7 @@ public class LikeService {
         like.setUpvote(simplifiedLikeDTO.isUpvote());
         return likeRepository.save(like);
     }
+
     public Optional<Like> updateLike(String likeId) {
         LocalDate now = LocalDate.now();
         return likeRepository.findByLikeId(likeId).map(like -> {
@@ -83,6 +85,7 @@ public class LikeService {
             return likeRepository.save(like);
         });
     }
+
     public void deleteLike(String likeId) {
         likeRepository.deleteByLikeId(likeId);
     }

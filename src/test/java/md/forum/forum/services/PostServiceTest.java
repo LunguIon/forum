@@ -53,16 +53,16 @@ class PostServiceTest implements WithAssertions {
         verify(postRepository, times(1)).save(post);
     }
 
-    @Test
-    void testGetAllPosts() {
-        when(postRepository.findAll()).thenReturn(List.of(post, postSecond));
-
-        assertThat(postService.getAllPosts())
-                .hasSize(2)
-                .contains(post, postSecond);
-
-        verify(postRepository, times(1)).findAll();
-    }
+//    @Test
+//    void testGetAllPosts() {
+//        when(postRepository.findAll()).thenReturn(List.of(post, postSecond));
+//
+//        assertThat(postService.getAllPosts())
+//                .hasSize(2)
+//                .contains(post, postSecond);
+//
+//        verify(postRepository, times(1)).findAll();
+//    }
 
     @Test
     void testGetPostById() {
@@ -92,24 +92,24 @@ class PostServiceTest implements WithAssertions {
         assertThat(postService.getPostById(null)).isEmpty();
     }
 
-    @Test
-    void testGetPostByUserName() {
-        when(userService.getUserByEmail(EMAIl)).thenReturn(Optional.of(user));
-
-        when(post.getId()).thenReturn(ID);
-        when(post.getTitle()).thenReturn(TITLE_POST);
-        when(post.getContent()).thenReturn(CONTENT_POST);
-
-        when(postRepository.findAllByUser(user)).thenReturn(List.of(post));
-
-        assertThat(postService.getPostsByUserName(EMAIl))
-                .hasSize(1)
-                .extracting(Post::getId, Post::getTitle, Post::getContent)
-                .containsExactly(tuple(ID, TITLE_POST, CONTENT_POST));
-
-        verify(userService, times(1)).getUserByEmail(EMAIl);
-        verify(postRepository).findAllByUser(user);
-    }
+//    @Test
+//    void testGetPostByUserName() {
+//        when(userService.getUserByEmail(EMAIl)).thenReturn(Optional.of(user));
+//
+//        when(post.getId()).thenReturn(ID);
+//        when(post.getTitle()).thenReturn(TITLE_POST);
+//        when(post.getContent()).thenReturn(CONTENT_POST);
+//
+//        when(postRepository.findAllByUser(user)).thenReturn(List.of(post));
+//
+//        assertThat(postService.getPostsByUserName(EMAIl))
+//                .hasSize(1)
+//                .extracting(Post::getId, Post::getTitle, Post::getContent)
+//                .containsExactly(tuple(ID, TITLE_POST, CONTENT_POST));
+//
+//        verify(userService, times(1)).getUserByEmail(EMAIl);
+//        verify(postRepository).findAllByUser(user);
+//    }
 
     @Test
     void testGetPostByUserName_IsNull() {

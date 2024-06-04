@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface TopicRepository extends JpaRepository<Topic,Integer> {
     Optional<Topic> findById(int id);
     Optional<Topic> findByTitle(String title);
-    Optional<List<Topic>> findByUserEmail(String email);
-    Optional<List<Topic>> findAllByOrderByTitleDesc();
+    List<Topic> findByUserEmail(String email);
+    List<Topic> findAllByOrderByTitleDesc();
     void deleteByTitle(String title);
 }

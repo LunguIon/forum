@@ -1,6 +1,7 @@
 package md.forum.forum.controllers;
 
-import md.forum.forum.dto.SimplifiedTopicDTO;
+import md.forum.forum.dto.get.TopicDTO;
+import md.forum.forum.dto.simplified.SimplifiedTopicDTO;
 import md.forum.forum.models.Topic;
 import md.forum.forum.services.TopicService;
 import org.apache.logging.log4j.LogManager;
@@ -37,8 +38,8 @@ public class TopicController {
     }
 
     @GetMapping("/title/{title}")
-    public ResponseEntity<Topic> getTopicByTitle(@PathVariable String title) {
-        Optional<Topic> topicOptional = topicService.findTopicByTitle(title);
+    public ResponseEntity<TopicDTO> getTopicByTitle(@PathVariable String title) {
+        Optional<TopicDTO> topicOptional = topicService.findTopicByTitle(title);
         return topicOptional.map(topic -> ResponseEntity
                         .ok()
                         .body(topic))
@@ -48,25 +49,24 @@ public class TopicController {
     }
 
     @GetMapping("/user/{email}")
-    public ResponseEntity<List<Topic>> getTopicsByUserEmail(@PathVariable String email) {
-        Optional<List<Topic>> topicsOptional = topicService.findTopicsByUserEmail(email);
-        return topicsOptional.map(topics -> ResponseEntity
-                        .ok()
-                        .body(topics))
-                .orElseGet(() -> ResponseEntity
-                        .notFound()
-                        .build());
+    public ResponseEntity<List<TopicDTO>> getTopicsByUserEmail(@PathVariable String email) {
+        List<TopicDTO> topics = topicService.findTopicsByUserEmail(email);
+
+        if (topics == null || topics.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(topics);
+        }
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Topic>> getAllTopicsOrderedByTitleDesc() {
-        Optional<List<Topic>> topicsOptional = topicService.findAllTopicsOrderByTitleDesc();
-        return topicsOptional.map(topics -> ResponseEntity
-                        .ok()
-                        .body(topics))
-                .orElseGet(() -> ResponseEntity
-                        .notFound()
-                        .build());
+    public ResponseEntity<List<TopicDTO>> getAllTopicsOrderedByTitleDesc() {
+        List<TopicDTO> topics = topicService.findAllTopicsOrderByTitleDesc();
+        if (topics == null || topics.isEmpty()) {
+            return ResponseEntity.notFound().build(); // Return 404 Not Found if no topics found
+        } else {
+            return ResponseEntity.ok(topics); // Return 200 OK with the list of topics
+        }
     }
 
     @PostMapping

@@ -2,7 +2,7 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import md.forum.forum.dto.SimplifiedLikeDTO;
+import md.forum.forum.dto.simplified.SimplifiedLikeDTO;
 import md.forum.forum.models.Like;
 import md.forum.forum.services.LikeService;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,6 @@ public class LikeController {
     @Autowired
     public LikeController(LikeService likeService) {
         this.likeService = likeService;
-
     }
 
     @Operation(summary = "Get all likes")

@@ -2,6 +2,7 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import md.forum.forum.dto.get.UserDTO;
 import md.forum.forum.models.User;
 import md.forum.forum.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -29,20 +30,20 @@ public class UserController {
 
     @Operation(summary = "Find all users")
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         logger.info("getAllUsers was called");
-        List<User> users = userService.getAllUsers();
+        List<UserDTO> users = userService.getAllUsers();
         logger.info("getAllUsers returned {} users", users.size());
         return ResponseEntity.ok(users);
     }
 
     @Operation(summary = "Find user by email")
     @GetMapping("/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
         logger.info("getUserByEmail called for email: {}", email);
         return userService.getUserByEmail(email)
                 .map(user -> {
-                    logger.info("User found with email: {}", user.getEmail());
+                    logger.info("User found with email: {}", email);
                     return ResponseEntity.ok(user);
                 })
                 .orElseGet(() -> {
