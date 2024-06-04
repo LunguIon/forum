@@ -11,8 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
 @RequestMapping("/posts")
@@ -102,5 +105,21 @@ public class PostController {
             logger.error("Post was not found, and was not deleted");
             return ResponseEntity.notFound().build();
         }
+    }
+
+    //Images
+    @PostMapping(
+            value = "{postId}/image",
+            consumes = MULTIPART_FORM_DATA_VALUE
+    )
+    public void uploadUserProfileImage(@PathVariable("postId") String postId,
+                                       @RequestParam("file") MultipartFile file) {
+        postService.uploadPostImage(postId, file);
+
+    }
+    @GetMapping("{postId}/image")
+    public byte [] uploadUserProfileImage(@PathVariable("postId") String postId) {
+        return postService.getPostImage(postId);
+
     }
 }

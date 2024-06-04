@@ -8,13 +8,19 @@ import md.forum.forum.dto.simplified.SimplifiedPostDTO;
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.PostRepository;
+import md.forum.forum.s3.S3Buckets;
+import md.forum.forum.s3.S3Service;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,14 +28,17 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final TopicService topicService;
-    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final PostDTOMapper postDTOMapper;
-
-    public PostService(PostRepository postRepository, UserService userService, TopicService topicService, PostDTOMapper postDTOMapper) {
+    private final S3Service s3Service;
+    private final S3Buckets s3Buckets;
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public PostService(PostRepository postRepository, UserService userService, TopicService topicService, PostDTOMapper postDTOMapper, S3Service s3Service, S3Buckets s3Buckets) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.topicService = topicService;
         this.postDTOMapper = postDTOMapper;
+        this.s3Service = s3Service;
+        this.s3Buckets = s3Buckets;
     }
 
 
@@ -123,6 +132,47 @@ public class PostService {
             return true;
         }
         return false;
+    }
+
+    public void uploadPostImage(String postId, MultipartFile file) {
+        if(!postRepository.existsByPostId(postId)) {
+            try {
+                throw new ChangeSetPersister.NotFoundException();
+            } catch (ChangeSetPersister.NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            String postImageId = UUID.randomUUID().toString();
+            try {
+                s3Service.putObject(
+                        s3Buckets.getPosts(),
+                        "postImage/%s/%s".formatted(postId, postImageId),
+                        file.getBytes()
+                );
+                postRepository.updateImageByPostId(postId, postImageId);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    public byte[] getPostImage(String postId) {
+        Post post = postRepository.findPostByPostId(postId).orElseThrow();
+        byte[] profileImage = null;
+        if(post != null) {
+            if(post.getPostId() != null) {
+                if(!post.getPostId().contains("https")){
+                    String profileImageId = post.getPostId();
+                    profileImage = s3Service.getObject(
+                            s3Buckets.getPosts(),
+                            "postImage/%s/%s".formatted(postId,profileImageId)
+                    );
+                }
+
+            }
+        }
+        return profileImage;
     }
 
 

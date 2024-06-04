@@ -149,11 +149,14 @@ public class UserService {
         byte[] profileImage = null;
         if(user != null) {
             if(user.getImageUrlProfile() != null) {
-                String profileImageId = user.getImageUrlProfile();
-                profileImage = s3Service.getObject(
-                        s3Buckets.getUsers(),
-                        "profile-images/%s/%s".formatted(userEmail,profileImageId)
-                );
+                if(!user.getImageUrlProfile().contains("https")){
+                    String profileImageId = user.getImageUrlProfile();
+                    profileImage = s3Service.getObject(
+                            s3Buckets.getUsers(),
+                            "profile-images/%s/%s".formatted(userEmail,profileImageId)
+                    );
+                }
+
             }
         }
         return profileImage;
