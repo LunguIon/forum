@@ -144,7 +144,7 @@ public class UserService {
 
     }
 
-    public byte[] getUserPrfileImage(String userEmail) {
+    public byte[] getUserProfileImage(String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElse(null);
         byte[] profileImage = null;
         if(user != null) {

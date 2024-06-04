@@ -102,4 +102,9 @@ public class  CommentService {
         }
         return false;
     }
+
+    public int countAllByPostId(String postId) {
+        return commentRepository.countAllByPostPostId(postId);
+    }
+
 }

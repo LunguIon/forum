@@ -27,7 +27,7 @@ public class TestController {
             consumes = MULTIPART_FORM_DATA_VALUE)
     public byte[] testPut(@RequestParam("file") MultipartFile file) {
        userService.uploadUserProfileImage("Liebe@gmail.com",file);
-      return userService.getUserPrfileImage("Liebe@gmail.com");
+      return userService.getUserProfileImage("Liebe@gmail.com");
     }
 
 }

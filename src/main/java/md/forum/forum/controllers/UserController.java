@@ -158,9 +158,9 @@ public class UserController {
         userService.uploadUserProfileImage(userEmail, file);
 
     }
-    @GetMapping("{userEmail}/profile-image"    )
+    @GetMapping("{userEmail}/profile-image")
     public byte [] uploadUserProfileImage(@PathVariable("userEmail") String userEmail) {
-        return userService.getUserPrfileImage(userEmail);
+        return userService.getUserProfileImage(userEmail);
 
     }
 }

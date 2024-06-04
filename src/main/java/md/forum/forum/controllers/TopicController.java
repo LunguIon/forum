@@ -63,9 +63,9 @@ public class TopicController {
     public ResponseEntity<List<TopicDTO>> getAllTopicsOrderedByTitleDesc() {
         List<TopicDTO> topics = topicService.findAllTopicsOrderByTitleDesc();
         if (topics == null || topics.isEmpty()) {
-            return ResponseEntity.notFound().build(); // Return 404 Not Found if no topics found
+            return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(topics); // Return 200 OK with the list of topics
+            return ResponseEntity.ok(topics); 
         }
     }
 
