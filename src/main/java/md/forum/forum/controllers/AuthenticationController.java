@@ -2,10 +2,10 @@ package md.forum.forum.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import md.forum.forum.dto.JwtResponseDTO;
-import md.forum.forum.dto.LoginUserDto;
-import md.forum.forum.dto.RefreshTokenRequestDTO;
-import md.forum.forum.dto.RegisterUserDto;
+import md.forum.forum.dto.auth.JwtResponseDTO;
+import md.forum.forum.dto.auth.LoginUserDto;
+import md.forum.forum.dto.auth.RefreshTokenRequestDTO;
+import md.forum.forum.dto.auth.RegisterUserDto;
 import md.forum.forum.models.User;
 import md.forum.forum.security.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;

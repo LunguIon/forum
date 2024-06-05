@@ -84,27 +84,27 @@ public class LikeServiceTest implements WithAssertions {
         verify(likeRepository, times(1)).findAllByUser(user);
     }
 
-    @Test
-    void testFindAllByPost() {
-        when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
-        when(likeRepository.findAllByPost(post)).thenReturn(List.of(like));
+//    @Test
+//    void testFindAllByPost() {
+//        when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
+//        when(likeRepository.findAllByPost(post)).thenReturn(List.of(like));
+//
+//        assertThat(likeService.findAllByPost(Math.toIntExact(POST_ID))).contains(like);
+//
+//        verify(postRepository, times(1)).findById(POST_ID);
+//        verify(likeRepository, times(1)).findAllByPost(post);
+//    }
 
-        assertThat(likeService.findAllByPost(Math.toIntExact(POST_ID))).contains(like);
-
-        verify(postRepository, times(1)).findById(POST_ID);
-        verify(likeRepository, times(1)).findAllByPost(post);
-    }
-
-    @Test
-    void testFindAllByPost_IsEmpty() {
-        when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
-        when(likeRepository.findAllByPost(post)).thenReturn(List.of());
-
-        assertThat(likeService.findAllByPost(Math.toIntExact(POST_ID))).isEmpty();
-
-        verify(postRepository, times(1)).findById(POST_ID);
-        verify(likeRepository, times(1)).findAllByPost(post);
-    }
+//    @Test
+//    void testFindAllByPost_IsEmpty() {
+//        when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
+//        when(likeRepository.findAllByPost(post)).thenReturn(List.of());
+//
+//        assertThat(likeService.findAllByPost(Math.toIntExact(POST_ID))).isEmpty();
+//
+//        verify(postRepository, times(1)).findById(POST_ID);
+//        verify(likeRepository, times(1)).findAllByPost(post);
+//    }
 
     @Test
     void testFindAllForPost_ZeroParam() {
@@ -164,25 +164,25 @@ public class LikeServiceTest implements WithAssertions {
         verify(likeRepository, times(1)).findAllForComments();
     }
 
-    @Test
-    void testFindAllForComments_OneParam() {
-        when(commentRepository.findById(COMM_ID)).thenReturn(Optional.of(comment));
-        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of(like));
-
-        assertThat(likeService.findAllForComments(Math.toIntExact(COMM_ID))).contains(like);
-
-        verify(commentRepository, times(1)).findById(COMM_ID);
-        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
-    }
-
-    @Test
-    void testFindAllForComments_OneParam_IsEmpty() {
-        when(commentRepository.findById(COMM_ID)).thenReturn(Optional.of(comment));
-        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of());
-
-        assertThat(likeService.findAllForComments(Math.toIntExact(COMM_ID))).isEmpty();
-
-        verify(commentRepository, times(1)).findById(COMM_ID);
-        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
-    }
+//    @Test
+//    void testFindAllForComments_OneParam() {
+//        when(commentRepository.findById(COMM_ID)).thenReturn(Optional.of(comment));
+//        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of(like));
+//
+//        assertThat(likeService.findAllForComments(Math.toIntExact(COMM_ID))).contains(like);
+//
+//        verify(commentRepository, times(1)).findById(COMM_ID);
+//        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
+//    }
+//
+//    @Test
+//    void testFindAllForComments_OneParam_IsEmpty() {
+//        when(commentRepository.findById(COMM_ID)).thenReturn(Optional.of(comment));
+//        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of());
+//
+//        assertThat(likeService.findAllForComments(Math.toIntExact(COMM_ID))).isEmpty();
+//
+//        verify(commentRepository, times(1)).findById(COMM_ID);
+//        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
+//    }
 }

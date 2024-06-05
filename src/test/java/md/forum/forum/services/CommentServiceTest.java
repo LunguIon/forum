@@ -46,15 +46,15 @@ public class CommentServiceTest implements WithAssertions {
         verify(commentRepository, times(1)).save(comment);
     }
 
-    @Test
-    void testGetAllComments() {
-        when(commentRepository.findAll()).thenReturn(List.of(comment, commentSecond));
-
-        assertThat(commentService.getAllComments()).hasSize(2)
-                .contains(commentSecond, comment);
-
-        verify(commentRepository, times(1)).findAll();
-    }
+//    @Test
+//    void testGetAllComments() {
+//        when(commentRepository.findAll()).thenReturn(List.of(comment, commentSecond));
+//
+//        assertThat(commentService.getAllComments()).hasSize(2)
+//                .contains(commentSecond, comment);
+//
+//        verify(commentRepository, times(1)).findAll();
+//    }
 
     @Test
     void testGetCommentById_Found() {

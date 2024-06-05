@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity(name = "comments")
 @Getter
@@ -17,6 +18,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true, nullable = false)
+    private String commentId;
     @Column
     private String content;
     @Column(name = "value_of_like")
@@ -32,4 +35,7 @@ public class Comment {
     @ManyToOne
     private User user;
 
+    public void setCommentId() {
+        this.commentId = UUID.randomUUID().toString();
+    }
 }

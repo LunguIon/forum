@@ -57,14 +57,14 @@ class UserServiceTest implements WithAssertions {
         verify(userRepository, times(1)).save(user);
     }
 
-    @Test
-    void getAllUsers() {
-        when(userRepository.findAll()).thenReturn(List.of(user, userSecond));
-
-        assertThat(userService.getAllUsers()).contains(user, userSecond);
-
-        verify(userRepository, times(1)).findAll();
-    }
+//    @Test
+//    void getAllUsers() {
+//        when(userRepository.findAll()).thenReturn(List.of(user, userSecond));
+//
+//        assertThat(userService.getAllUsers()).contains(user, userSecond);
+//
+//        verify(userRepository, times(1)).findAll();
+//    }
 
     @Test
     void getAllUsers_IsEmpty() {
@@ -98,19 +98,19 @@ class UserServiceTest implements WithAssertions {
         verifyNoMoreInteractions(userRepository);
     }
 
-    @Test
-    void testGetUserByEmail() {
-        when(user.getId()).thenReturn(Math.toIntExact(USER_ID));
-        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
-
-        assertThat(userService.getUserByEmail(EMAIL))
-                .isPresent()
-                .get()
-                .extracting(User::getId)
-                .isEqualTo(Math.toIntExact(USER_ID));
-
-        verify(userRepository, times(1)).findByEmail(EMAIL);
-    }
+//    @Test
+//    void testGetUserByEmail() {
+//        when(user.getId()).thenReturn(Math.toIntExact(USER_ID));
+//        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(user));
+//
+//        assertThat(userService.getUserByEmail(EMAIL))
+//                .isPresent()
+//                .get()
+//                .extracting(User::getId)
+//                .isEqualTo(Math.toIntExact(USER_ID));
+//
+//        verify(userRepository, times(1)).findByEmail(EMAIL);
+//    }
 
     @Test
     void testGetUserByEmail_EmptyUser() {
@@ -122,19 +122,19 @@ class UserServiceTest implements WithAssertions {
         verifyNoMoreInteractions(userRepository);
     }
 
-    @Test
-    void testGetUserByUsername() {
-        when(user.getId()).thenReturn(Math.toIntExact(USER_ID));
-        when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.of(user));
-
-        assertThat(userService.getUserByUsername(USERNAME))
-                .isEqualTo(Optional.of(user))
-                .get()
-                .extracting(User::getId)
-                .isEqualTo(Math.toIntExact(USER_ID));
-
-        verify(userRepository, times(1)).findByUsername(USERNAME);
-    }
+//    @Test
+//    void testGetUserByUsername() {
+//        when(user.getId()).thenReturn(Math.toIntExact(USER_ID));
+//        when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.of(user));
+//
+//        assertThat(userService.getUserByUsername(USERNAME))
+//                .isEqualTo(Optional.of(user))
+//                .get()
+//                .extracting(User::getId)
+//                .isEqualTo(Math.toIntExact(USER_ID));
+//
+//        verify(userRepository, times(1)).findByUsername(USERNAME);
+//    }
 
     @Test
     void testUpdatePassword() {

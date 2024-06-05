@@ -1,7 +1,7 @@
 package md.forum.forum.security.service;
 
 import lombok.RequiredArgsConstructor;
-import md.forum.forum.dto.Oauth2UserInfoDto;
+import md.forum.forum.dto.auth.Oauth2UserInfoDto;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
 import md.forum.forum.security.model.UserPrincipal;
