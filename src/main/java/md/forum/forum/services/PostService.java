@@ -45,13 +45,13 @@ public class PostService {
     public Post createPost(Post post) {
         return postRepository.save(post);
     }
+
     public Post createPost(SimplifiedPostDTO simplifiedPostDTO) {
         LocalDate now = LocalDate.now();
         Post post = new Post();
         post.setPostId();
         post.setTitle(simplifiedPostDTO.getTitle());
         post.setContent(simplifiedPostDTO.getContent());
-        post.setImageURL(simplifiedPostDTO.getImageURL());
         post.setTopic(topicService.findTopicByTitleFull(simplifiedPostDTO.getTopicTitle()).orElse(null));
         post.setCreateDate(Date.valueOf(dtf.format(now)));
         User user = userService.getUserByEmailFull(simplifiedPostDTO.getEmail()).orElseThrow();
@@ -112,7 +112,6 @@ public class PostService {
             post.setTitle(newPost.getTitle());
             post.setContent(newPost.getContent());
             post.setUpdateDate(Date.valueOf(dtf.format(now)));
-            post.setImageURL(newPost.getImageURL());
             post.setTopic(topicService.findTopicByTitleFull(newPost.getTopicTitle()).orElse(null));
             return postRepository.save(post);
         }).orElse(null);
