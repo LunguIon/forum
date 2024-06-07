@@ -17,9 +17,9 @@ public class Topic {
     private int id;
     @Column(unique = true,nullable = false)
     private String title;
-    @Column(unique = true,nullable = false)
+    @Column(nullable = false)
     private String content;
-    @Column(name = "image_url",unique = true)
+    @Column(name = "image_url")
     private String imageURL;
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_topic_user"))
     @ManyToOne(cascade=CascadeType.DETACH)
