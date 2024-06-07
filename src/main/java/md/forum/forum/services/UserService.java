@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.dto.mappers.UserDTOMapper;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
@@ -37,7 +37,7 @@ public class UserService {
         }
     }
     
-    public List<UserDTO> getAllUsers() {
+    public List<GetUserDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(userDTOMapper)
@@ -48,7 +48,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public Optional<UserDTO> getUserByEmail(String email) {
+    public Optional<GetUserDTO> getUserByEmail(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email)
                 .map(userDTOMapper)
                 .orElseThrow(() -> new NoSuchElementException("User with email [%s] was not found!".formatted(email)
@@ -58,7 +58,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<UserDTO> getUserByUsername(String username) {
+    public Optional<GetUserDTO> getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(userDTOMapper);
     }

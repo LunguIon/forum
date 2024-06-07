@@ -112,13 +112,33 @@ public class PostController {
             value = "{postId}/image",
             consumes = MULTIPART_FORM_DATA_VALUE
     )
-    public void uploadUserProfileImage(@PathVariable("postId") String postId,
+    public void uploadPostImage(@PathVariable("postId") String postId,
                                        @RequestParam("file") MultipartFile file) {
         postService.uploadPostImage(postId, file);
 
     }
+    @PostMapping(
+            value = "/image",
+            consumes = MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<Post> createPostWithImage(@RequestBody SimplifiedPostDTO simplifiedPostDTO,
+                                       @RequestParam("file") MultipartFile file
+    ) {
+        Post createdPost = postService.createPost(simplifiedPostDTO);
+        if (createdPost == null) {
+            logger.info("Post was not created");
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } else {
+            postService.uploadPostImage(createdPost.getPostId(), file);
+            logger.info("Post was created with id: {}", createdPost.getPostId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+        }
+
+
+
+    }
     @GetMapping("{postId}/image")
-    public byte [] uploadUserProfileImage(@PathVariable("postId") String postId) {
+    public byte [] uploadPostImage(@PathVariable("postId") String postId) {
         return postService.getPostImage(postId);
 
     }

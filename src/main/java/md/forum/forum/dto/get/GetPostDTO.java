@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public record GetPostDTO(
         String postId,
-        UserDTO user,
+        GetUserDTO user,
         String title,
         String content,
         String imageUrl,

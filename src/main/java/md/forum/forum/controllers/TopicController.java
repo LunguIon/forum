@@ -1,6 +1,6 @@
 package md.forum.forum.controllers;
 
-import md.forum.forum.dto.get.TopicDTO;
+import md.forum.forum.dto.get.GetTopicDTO;
 import md.forum.forum.dto.simplified.SimplifiedTopicDTO;
 import md.forum.forum.models.Topic;
 import md.forum.forum.services.TopicService;
@@ -38,8 +38,8 @@ public class TopicController {
     }
 
     @GetMapping("/title/{title}")
-    public ResponseEntity<TopicDTO> getTopicByTitle(@PathVariable String title) {
-        Optional<TopicDTO> topicOptional = topicService.findTopicByTitle(title);
+    public ResponseEntity<GetTopicDTO> getTopicByTitle(@PathVariable String title) {
+        Optional<GetTopicDTO> topicOptional = topicService.findTopicByTitle(title);
         return topicOptional.map(topic -> ResponseEntity
                         .ok()
                         .body(topic))
@@ -49,8 +49,8 @@ public class TopicController {
     }
 
     @GetMapping("/user/{email}")
-    public ResponseEntity<List<TopicDTO>> getTopicsByUserEmail(@PathVariable String email) {
-        List<TopicDTO> topics = topicService.findTopicsByUserEmail(email);
+    public ResponseEntity<List<GetTopicDTO>> getTopicsByUserEmail(@PathVariable String email) {
+        List<GetTopicDTO> topics = topicService.findTopicsByUserEmail(email);
 
         if (topics == null || topics.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -60,8 +60,8 @@ public class TopicController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<TopicDTO>> getAllTopicsOrderedByTitleDesc() {
-        List<TopicDTO> topics = topicService.findAllTopicsOrderByTitleDesc();
+    public ResponseEntity<List<GetTopicDTO>> getAllTopicsOrderedByTitleDesc() {
+        List<GetTopicDTO> topics = topicService.findAllTopicsOrderByTitleDesc();
         if (topics == null || topics.isEmpty()) {
             return ResponseEntity.notFound().build();
         } else {

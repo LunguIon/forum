@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public record GetCommentDTO(
         String commentId,
-        UserDTO user,
+        GetUserDTO user,
         String content,
         String postId,
         long valueOfLikes,
