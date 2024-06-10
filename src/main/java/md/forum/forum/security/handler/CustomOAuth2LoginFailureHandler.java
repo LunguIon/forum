@@ -13,7 +13,7 @@ import java.io.IOException;
 public class CustomOAuth2LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        setDefaultFailureUrl("http://localhost:4200/error");
+        setDefaultFailureUrl("https://speakup.lol/error");
         super.onAuthenticationFailure(request, response, exception);
     }
 }
