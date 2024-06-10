@@ -25,17 +25,32 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            RefreshToken refreshToken = RefreshToken.builder()
-                    .user(user)
-                    .token(UUID.randomUUID().toString())
-                    .expiryDate(Instant.now().plusMillis(600000))
-                    .build();
-            return refreshTokenRepository.save(refreshToken);
+            if(!existsByUser(userOptional.get())) {
+                User user = userOptional.get();
+                RefreshToken refreshToken = RefreshToken.builder()
+                        .user(user)
+                        .token(UUID.randomUUID().toString())
+                        .expiryDate(Instant.now().plusMillis(18000000))
+                        .build();
+                return refreshTokenRepository.save(refreshToken);
+            }
+            else {
+                throw new IllegalArgumentException("Tokes was created already");
+            }
         } else {
             throw new IllegalArgumentException("User not found for username : " + email);
         }
 
+    }
+
+    public boolean existsByUser(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        return refreshTokenRepository.existsByUser(userOptional.get());
+    }
+    public boolean existsByUser(User user) {
+
+        return refreshTokenRepository.existsByUser(user);
     }
 
 
