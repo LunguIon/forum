@@ -90,5 +90,9 @@ public class LikeService {
         likeRepository.deleteByLikeId(likeId);
     }
 
+    public int countAllByPost(String postId){
+        Post post = postRepository.findPostByPostId(postId).orElseThrow();
+        return likeRepository.countAllByPost(post);
+    }
 
 }

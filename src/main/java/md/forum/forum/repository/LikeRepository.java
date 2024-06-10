@@ -19,6 +19,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     List<Like> findAllByPost(Post post);
 
+    int countAllByPost(Post post);
+
     @Query("SELECT l FROM likes l where l.comment is null")
     List<Like> findAllForPost();
 

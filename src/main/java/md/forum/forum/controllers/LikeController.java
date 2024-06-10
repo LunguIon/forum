@@ -153,4 +153,9 @@ public class LikeController {
         likeService.deleteLike(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/count/postId/{postId}")
+    public ResponseEntity<Integer> countLikesByPostId(@PathVariable String postId) {
+        int count = likeService.countAllByPost(postId);
+        return ResponseEntity.ok(count);
+    }
 }
