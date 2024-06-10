@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,14 +36,14 @@ public class TopicService {
         return topicRepository.findByUserEmail(email)
                 .stream()
                 .map(topicDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<TopicDTO> findAllTopicsOrderByTitleDesc() {
         return topicRepository.findAllByOrderByTitleDesc()
                 .stream()
                 .map(topicDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Topic createTopic(SimplifiedTopicDTO simplifiedTopicDTO) {
