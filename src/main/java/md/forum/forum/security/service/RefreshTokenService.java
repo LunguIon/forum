@@ -30,12 +30,12 @@ public class RefreshTokenService {
                 RefreshToken refreshToken = RefreshToken.builder()
                         .user(user)
                         .token(UUID.randomUUID().toString())
-                        .expiryDate(Instant.now().plusMillis(18000000))
+                        .expiryDate(Instant.now().plusMillis(18000000 ))
                         .build();
                 return refreshTokenRepository.save(refreshToken);
             }
             else {
-                return refreshTokenRepository.findByToken(email).orElseThrow();
+                return refreshTokenRepository.findByUser(userOptional.get()).orElseThrow();
             }
         } else {
             throw new IllegalArgumentException("User not found for username : " + email);

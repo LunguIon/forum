@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface RefreshTokenRepository extends CrudRepository<RefreshToken, Integer> {
     Optional<RefreshToken> findByToken(String token);
     boolean existsByUser(User user);
+    Optional<RefreshToken> findByUser(User user);
+    void deleteByUser(User user);
 }
