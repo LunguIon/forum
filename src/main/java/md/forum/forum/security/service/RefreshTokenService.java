@@ -35,7 +35,7 @@ public class RefreshTokenService {
                 return refreshTokenRepository.save(refreshToken);
             }
             else {
-                throw new IllegalArgumentException("Tokes was created already");
+                return refreshTokenRepository.findByToken(email).orElseThrow();
             }
         } else {
             throw new IllegalArgumentException("User not found for username : " + email);
