@@ -94,6 +94,7 @@ public class PostService {
     }
     //Don't
     public Post updatePost(Long id, Post newPost) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
         return postRepository.findById(id).map(post -> {
             post.setTitle(newPost.getTitle());
