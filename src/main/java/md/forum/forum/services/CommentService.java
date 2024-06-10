@@ -54,7 +54,7 @@ public class  CommentService {
         return commentRepository.findAllByPostPostId(postId)
                 .stream()
                 .map(commentDTOMapper)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Comment createComment(SimplifiedCommentDTO simplifiedCommentDTO){

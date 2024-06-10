@@ -75,12 +75,10 @@ public class TopicController {
         if (topic == null) {
             logger.info("Topic creation failed");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-        else {
+        } else {
             logger.info("Topic created");
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(topic);
         }
-
     }
 
     @DeleteMapping("/{title}")
