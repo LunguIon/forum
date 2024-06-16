@@ -1,5 +1,6 @@
 package md.forum.forum.services;
 
+import md.forum.forum.dto.simplified.SimplifiedLikeDTO;
 import md.forum.forum.models.Comment;
 import md.forum.forum.models.Like;
 import md.forum.forum.models.Post;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ public class LikeServiceTest implements WithAssertions {
     static final String EMAIL = "jonhdoe@gmail.com";
     static final Long POST_ID = 2L;
     static final Long COMM_ID = 1L;
+    static final String LIKE_ID = "12";
     @Mock
     Like like;
     @Mock
@@ -36,6 +39,8 @@ public class LikeServiceTest implements WithAssertions {
     @Mock
     Comment comment;
     @Mock
+    Date date;
+    @Mock
     CommentRepository commentRepository;
     @Mock
     UserRepository userRepository;
@@ -43,6 +48,8 @@ public class LikeServiceTest implements WithAssertions {
     PostRepository postRepository;
     @Mock
     LikeRepository likeRepository;
+    @Mock
+    SimplifiedLikeDTO simplifiedLikeDTO;
     @InjectMocks
     LikeService likeService;
 
@@ -84,27 +91,27 @@ public class LikeServiceTest implements WithAssertions {
         verify(likeRepository, times(1)).findAllByUser(user);
     }
 
-//    @Test
-//    void testFindAllByPost() {
-//        when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
-//        when(likeRepository.findAllByPost(post)).thenReturn(List.of(like));
-//
-//        assertThat(likeService.findAllByPost(Math.toIntExact(POST_ID))).contains(like);
-//
-//        verify(postRepository, times(1)).findById(POST_ID);
-//        verify(likeRepository, times(1)).findAllByPost(post);
-//    }
+    @Test
+    void testFindAllByPost() {
+        when(postRepository.findPostByPostId(String.valueOf(POST_ID))).thenReturn(Optional.of(post));
+        when(likeRepository.findAllByPost(post)).thenReturn(List.of(like));
 
-//    @Test
-//    void testFindAllByPost_IsEmpty() {
-//        when(postRepository.findById(POST_ID)).thenReturn(Optional.of(post));
-//        when(likeRepository.findAllByPost(post)).thenReturn(List.of());
-//
-//        assertThat(likeService.findAllByPost(Math.toIntExact(POST_ID))).isEmpty();
-//
-//        verify(postRepository, times(1)).findById(POST_ID);
-//        verify(likeRepository, times(1)).findAllByPost(post);
-//    }
+        assertThat(likeService.findAllByPost(String.valueOf(POST_ID)).contains(like));
+
+        verify(postRepository, times(1)).findPostByPostId(String.valueOf(POST_ID));
+        verify(likeRepository, times(1)).findAllByPost(post);
+    }
+
+    @Test
+    void testFindAllByPost_IsEmpty() {
+        when(postRepository.findPostByPostId(String.valueOf(POST_ID))).thenReturn(Optional.of(post));
+        when(likeRepository.findAllByPost(post)).thenReturn(List.of());
+
+        assertThat(likeService.findAllByPost(String.valueOf(POST_ID))).isEmpty();
+
+        verify(postRepository, times(1)).findPostByPostId(String.valueOf(POST_ID));
+        verify(likeRepository, times(1)).findAllByPost(post);
+    }
 
     @Test
     void testFindAllForPost_ZeroParam() {
@@ -164,25 +171,106 @@ public class LikeServiceTest implements WithAssertions {
         verify(likeRepository, times(1)).findAllForComments();
     }
 
-//    @Test
-//    void testFindAllForComments_OneParam() {
-//        when(commentRepository.findById(COMM_ID)).thenReturn(Optional.of(comment));
-//        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of(like));
-//
-//        assertThat(likeService.findAllForComments(Math.toIntExact(COMM_ID))).contains(like);
-//
-//        verify(commentRepository, times(1)).findById(COMM_ID);
-//        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
-//    }
-//
-//    @Test
-//    void testFindAllForComments_OneParam_IsEmpty() {
-//        when(commentRepository.findById(COMM_ID)).thenReturn(Optional.of(comment));
-//        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of());
-//
-//        assertThat(likeService.findAllForComments(Math.toIntExact(COMM_ID))).isEmpty();
-//
-//        verify(commentRepository, times(1)).findById(COMM_ID);
-//        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
-//    }
+    @Test
+    void testFindAllForComments_OneParam() {
+        when(commentRepository.findCommentByCommentId(String.valueOf(COMM_ID))).thenReturn(Optional.of(comment));
+        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of(like));
+
+        assertThat(likeService.findAllForComments(String.valueOf(Math.toIntExact(COMM_ID)))).contains(like);
+
+        verify(commentRepository, times(1)).findCommentByCommentId(String.valueOf(COMM_ID));
+        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
+    }
+
+    @Test
+    void testFindAllForComments_OneParam_IsEmpty() {
+        when(commentRepository.findCommentByCommentId(String.valueOf(COMM_ID))).thenReturn(Optional.of(comment));
+        when(likeRepository.findAllForCommentsBy(comment)).thenReturn(List.of());
+
+        assertThat(likeService.findAllForComments(String.valueOf(Math.toIntExact(COMM_ID)))).isEmpty();
+
+        verify(commentRepository, times(1)).findCommentByCommentId(String.valueOf(COMM_ID));
+        verify(likeRepository, times(1)).findAllForCommentsBy(comment);
+    }
+
+    @Test
+    void testFindById() {
+        when(likeRepository.findByLikeId(String.valueOf(POST_ID))).thenReturn(Optional.of(like));
+
+        assertThat(likeService.findById(String.valueOf(POST_ID))).contains(like);
+
+        verify(likeRepository).findByLikeId(String.valueOf(POST_ID));
+    }
+
+    @Test
+    void testFindById_IsEmpty() {
+        when(likeRepository.findByLikeId(String.valueOf(POST_ID))).thenReturn(Optional.empty());
+
+        assertThat(likeService.findById(String.valueOf(POST_ID))).isEmpty();
+
+        verify(likeRepository).findByLikeId(String.valueOf(POST_ID));
+
+    }
+
+    @Test
+    void testCreateLike() {
+        when(userRepository.findByEmail(simplifiedLikeDTO.getUserEmail())).thenReturn(Optional.of(user));
+        when(postRepository.findPostByPostId(simplifiedLikeDTO.getPostId())).thenReturn(Optional.of(post));
+        when(commentRepository.findCommentByCommentId(simplifiedLikeDTO.getCommentId())).thenReturn(Optional.of(comment));
+
+        when(like.getLikeId()).thenReturn(LIKE_ID);
+        when(like.getCreateDate()).thenReturn(date);
+        when(like.getUser()).thenReturn(user);
+        when(like.getPost()).thenReturn(post);
+        when(like.getComment()).thenReturn(comment);
+
+        when(likeRepository.save(any(Like.class))).thenReturn(like);
+
+        assertThat(likeService.createLike(simplifiedLikeDTO))
+                .isNotNull()
+                .isEqualTo(like)
+                .returns(user, Like::getUser)
+                .returns(post, Like::getPost)
+                .returns(comment, Like::getComment)
+                .returns(LIKE_ID,Like::getLikeId)
+                .returns(date, Like::getCreateDate);
+
+        verify(userRepository).findByEmail(simplifiedLikeDTO.getUserEmail());
+        verify(postRepository).findPostByPostId(simplifiedLikeDTO.getPostId());
+        verify(commentRepository).findCommentByCommentId(simplifiedLikeDTO.getCommentId());
+        verify(likeRepository).save(any(Like.class));
+    }
+
+    @Test
+    void testUpdateLike() {
+        like.setUpvote(true);
+
+        when(likeRepository.findByLikeId(LIKE_ID)).thenReturn(Optional.of(like));
+        when(likeRepository.save(like)).thenReturn(like);
+
+        assertThat(likeService.updateLike(LIKE_ID))
+                .containsInstanceOf(Like.class)
+                .hasValueSatisfying(l -> assertThat(l.isUpvote()).isFalse());
+
+        verify(likeRepository).findByLikeId(LIKE_ID);
+        verify(likeRepository).save(like);
+    }
+
+    @Test
+    void testUpdateLike_IsEmpty() {
+        when(likeRepository.findByLikeId(LIKE_ID)).thenReturn(Optional.empty());
+
+        Optional<Like> result = likeService.updateLike(LIKE_ID);
+
+        assertThat(result).isNotPresent();
+        verify(likeRepository).findByLikeId(LIKE_ID);
+        verify(likeRepository, never()).save(any(Like.class));
+    }
+
+    @Test
+    void testDeleteLike() {
+        doNothing().when(likeRepository).deleteByLikeId(LIKE_ID);
+        likeService.deleteLike(LIKE_ID);
+        verify(likeRepository).deleteByLikeId(LIKE_ID);
+    }
 }
