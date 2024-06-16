@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
-import md.forum.forum.dto.get.TopicDTO;
+import md.forum.forum.dto.get.GetTopicDTO;
 import md.forum.forum.dto.mappers.TopicDTOMapper;
 import md.forum.forum.dto.simplified.SimplifiedTopicDTO;
 import md.forum.forum.models.Topic;
@@ -24,7 +24,7 @@ public class TopicService {
         return topicRepository.findById(id);
     }
 
-    public Optional<TopicDTO> findTopicByTitle(String title) {
+    public Optional<GetTopicDTO> findTopicByTitle(String title) {
         return topicRepository.findByTitle(title)
                 .map(topicDTOMapper);
     }
@@ -32,14 +32,14 @@ public class TopicService {
         return topicRepository.findByTitle(title);
     }
 
-    public List<TopicDTO> findTopicsByUserEmail(String email) {
+    public List<GetTopicDTO> findTopicsByUserEmail(String email) {
         return topicRepository.findByUserEmail(email)
                 .stream()
                 .map(topicDTOMapper)
                 .toList();
     }
 
-    public List<TopicDTO> findAllTopicsOrderByTitleDesc() {
+    public List<GetTopicDTO> findAllTopicsOrderByTitleDesc() {
         return topicRepository.findAllByOrderByTitleDesc()
                 .stream()
                 .map(topicDTOMapper)

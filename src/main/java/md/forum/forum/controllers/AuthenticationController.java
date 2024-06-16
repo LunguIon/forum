@@ -23,7 +23,6 @@ public class AuthenticationController {
     public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
-
     @Operation(summary = "Register new account")
     @PostMapping("/signUp")
     public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {

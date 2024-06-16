@@ -1,7 +1,7 @@
 package md.forum.forum.services;
 
 import lombok.RequiredArgsConstructor;
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.dto.mappers.UserDTOMapper;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,7 +38,7 @@ public class UserService {
         }
     }
     
-    public List<UserDTO> getAllUsers() {
+    public List<GetUserDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(userDTOMapper)
@@ -48,7 +49,7 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public Optional<UserDTO> getUserByEmail(String email) {
+    public Optional<GetUserDTO> getUserByEmail(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email)
                 .map(userDTOMapper)
                 .orElseThrow(() -> new NoSuchElementException("User with email [%s] was not found!".formatted(email)
@@ -58,7 +59,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<UserDTO> getUserByUsername(String username) {
+    public Optional<GetUserDTO> getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(userDTOMapper);
     }
@@ -112,7 +113,7 @@ public class UserService {
         }
         return false;
     }
-
+    @Transactional
     public boolean deleteUser(String email) {
         if (userRepository.existsByEmail(email)) {
             userRepository.deleteByEmail(email);

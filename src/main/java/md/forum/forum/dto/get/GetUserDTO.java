@@ -1,6 +1,6 @@
 package md.forum.forum.dto.get;
 
-public record UserDTO(
+public record GetUserDTO(
         String username,
         String email,
         String imageUrl

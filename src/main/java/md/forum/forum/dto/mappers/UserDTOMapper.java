@@ -1,15 +1,15 @@
 package md.forum.forum.dto.mappers;
 
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.models.User;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 @Service
-public class UserDTOMapper implements Function<User, UserDTO> {
+public class UserDTOMapper implements Function<User, GetUserDTO> {
     @Override
-    public UserDTO apply(User user) {
-        return new UserDTO(
+    public GetUserDTO apply(User user) {
+        return new GetUserDTO(
                 user.getUsername(),
                 user.getEmail(),
                 user.getImageUrlProfile()
