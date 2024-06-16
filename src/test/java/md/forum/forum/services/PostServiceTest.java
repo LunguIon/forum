@@ -90,7 +90,7 @@ class PostServiceTest implements WithAssertions {
     void testCreatePostDTO() {
         when(simplifiedPostDTO.getTitle()).thenReturn(TITLE_POST);
         when(simplifiedPostDTO.getContent()).thenReturn(CONTENT_POST);
-        when(simplifiedPostDTO.getImageURL()).thenReturn(IMG_URL);
+        //when(simplifiedPostDTO.getImageURL()).thenReturn(IMG_URL);
         when(topicService.findTopicByTitleFull(simplifiedPostDTO.getTopicTitle())).thenReturn(Optional.of(topic));
         when(userService.getUserByEmailFull(simplifiedPostDTO.getEmail())).thenReturn(Optional.of(user));
 
