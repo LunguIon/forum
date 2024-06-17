@@ -1,6 +1,6 @@
 package md.forum.forum.services;
 
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.dto.mappers.UserDTOMapper;
 import md.forum.forum.models.User;
 import md.forum.forum.repository.UserRepository;
@@ -43,9 +43,9 @@ class UserServiceTest implements WithAssertions {
     @Mock
     private User userSecond;
     @Mock
-    private UserDTO userDTO;
+    private GetUserDTO userDTO;
     @Mock
-    private UserDTO userDTOSecond;
+    private GetUserDTO userDTOSecond;
     @Mock
     private UserDTOMapper userDTOMapper;
     @Mock
@@ -129,7 +129,7 @@ class UserServiceTest implements WithAssertions {
         assertThat(userService.getUserByEmail(EMAIL))
                 .isNotNull()
                 .isEqualTo(Optional.of(userDTO))
-                .get().extracting(UserDTO::email)
+                .get().extracting(GetUserDTO::email)
                 .isEqualTo(EMAIL);
 
         verify(userRepository).findByEmail(EMAIL);
