@@ -128,6 +128,7 @@ public class LikeController {
             return ResponseEntity.noContent().build();
         }
     }
+    @Operation(summary = "Get like by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Like> getLikeById(@PathVariable String id) {
         Optional<Like> like = likeService.findById(id);
@@ -135,12 +136,14 @@ public class LikeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Create like")
     @PostMapping
     public ResponseEntity<Like> createLike(@RequestBody SimplifiedLikeDTO simplifiedLikeDTO) {
         Like like = likeService.createLike(simplifiedLikeDTO);
         return ResponseEntity.ok(like);
     }
 
+    @Operation(summary = "Update the state of like")
     @PutMapping("/{id}")
     public ResponseEntity<Like> updateLike(@PathVariable String id) {
         Optional<Like> updatedLike = likeService.updateLike(id);
@@ -148,11 +151,14 @@ public class LikeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Delete like")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLike(@PathVariable String id) {
         likeService.deleteLike(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Count likes by Post ID")
     @GetMapping("/count/postId/{postId}")
     public ResponseEntity<Integer> countLikesByPostId(@PathVariable String postId) {
         int count = likeService.countAllByPost(postId);

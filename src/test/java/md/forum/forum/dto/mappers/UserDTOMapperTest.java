@@ -1,6 +1,6 @@
 package md.forum.forum.dto.mappers;
 
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.models.Role;
 import md.forum.forum.models.User;
 import org.assertj.core.api.WithAssertions;
@@ -25,9 +25,9 @@ public class UserDTOMapperTest implements WithAssertions {
         User user = new User(1, "tanja", "je@gmail.com", "hash", "img", date, role , true);
 
         assertThat(dtoMapper.apply(user))
-                .returns(user.getUsername(), UserDTO::username)
-                .returns(user.getEmail(), UserDTO::email)
-                .returns(user.getImageUrlProfile(), UserDTO::imageUrl);
+                .returns(user.getUsername(), GetUserDTO::username)
+                .returns(user.getEmail(), GetUserDTO::email)
+                .returns(user.getImageUrlProfile(), GetUserDTO::imageUrl);
     }
 
     @Test

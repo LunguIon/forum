@@ -149,6 +149,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @Operation(summary = "ProfileImage")
     @PostMapping(
             value = "{userEmail}/profile-image",
             consumes = MULTIPART_FORM_DATA_VALUE
@@ -158,6 +159,7 @@ public class UserController {
         userService.uploadUserProfileImage(userEmail, file);
 
     }
+    @Operation(summary = "Upload user's profile image")
     @GetMapping("{userEmail}/profile-image")
     public byte [] uploadUserProfileImage(@PathVariable("userEmail") String userEmail) {
         return userService.getUserProfileImage(userEmail);

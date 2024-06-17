@@ -1,6 +1,6 @@
 package md.forum.forum.services;
 
-import md.forum.forum.dto.get.TopicDTO;
+import md.forum.forum.dto.get.GetTopicDTO;
 import md.forum.forum.dto.mappers.TopicDTOMapper;
 import md.forum.forum.dto.simplified.SimplifiedTopicDTO;
 import md.forum.forum.models.Topic;
@@ -36,7 +36,7 @@ public class TopicServiceTest implements WithAssertions {
     @Mock
     TopicDTOMapper topicDTOMapper;
     @Mock
-    TopicDTO topicDTO;
+    GetTopicDTO topicDTO;
     @Mock
     SimplifiedTopicDTO simplifiedTopicDTO;
     @InjectMocks
@@ -65,7 +65,7 @@ public class TopicServiceTest implements WithAssertions {
 
         assertThat(topicService.findTopicByTitle(TITLE))
                 .isEqualTo(Optional.of(topicDTO))
-                .map(TopicDTO::title)
+                .map(GetTopicDTO::title)
                 .contains(TITLE);
 
         verify(topicDTOMapper).apply(topic);
