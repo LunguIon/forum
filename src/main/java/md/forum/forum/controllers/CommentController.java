@@ -103,6 +103,7 @@ public class CommentController {
     public void commentNotFoundLog(String id){
         logger.error("Comment with id {} was not found", id);
     }
+    @Operation(summary = "Get quantity of comments by post ID")
     @GetMapping("/count/postId/{postId}")
     public ResponseEntity<Integer> getCountCommentByPostId(@PathVariable String postId) {
         logger.info("getCountCommentByPostId was called");

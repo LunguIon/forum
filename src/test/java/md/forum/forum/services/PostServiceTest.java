@@ -90,14 +90,12 @@ class PostServiceTest implements WithAssertions {
     void testCreatePostDTO() {
         when(simplifiedPostDTO.getTitle()).thenReturn(TITLE_POST);
         when(simplifiedPostDTO.getContent()).thenReturn(CONTENT_POST);
-        when(simplifiedPostDTO.getImageURL()).thenReturn(IMG_URL);
         when(topicService.findTopicByTitleFull(simplifiedPostDTO.getTopicTitle())).thenReturn(Optional.of(topic));
         when(userService.getUserByEmailFull(simplifiedPostDTO.getEmail())).thenReturn(Optional.of(user));
 
         when(post.getPostId()).thenReturn(ID_STRING);
         when(post.getTitle()).thenReturn(TITLE_POST);
         when(post.getContent()).thenReturn(CONTENT_POST);
-        when(post.getImageURL()).thenReturn(IMG_URL);
         when(post.getUser()).thenReturn(user);
         when(post.getTopic()).thenReturn(topic);
 
@@ -109,7 +107,6 @@ class PostServiceTest implements WithAssertions {
                 .returns(ID_STRING, Post::getPostId)
                 .returns(TITLE_POST, Post::getTitle)
                 .returns(CONTENT_POST,Post::getContent)
-                .returns(IMG_URL, Post::getImageURL)
                 .returns(user, Post::getUser)
                 .returns(topic, Post::getTopic);
 

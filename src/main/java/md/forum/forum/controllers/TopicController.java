@@ -1,5 +1,6 @@
 package md.forum.forum.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import md.forum.forum.dto.get.GetTopicDTO;
 import md.forum.forum.dto.simplified.SimplifiedTopicDTO;
 import md.forum.forum.models.Topic;
@@ -26,6 +27,7 @@ public class TopicController {
         logger.info("TopicController created");
     }
 
+    @Operation(summary = "Get Topic by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Topic> getTopicById(@PathVariable int id) {
         Optional<Topic> topicOptional = topicService.findTopicById(id);
@@ -37,6 +39,7 @@ public class TopicController {
                         .build());
     }
 
+    @Operation(summary = "Get Topic by Title")
     @GetMapping("/title/{title}")
     public ResponseEntity<GetTopicDTO> getTopicByTitle(@PathVariable String title) {
         Optional<GetTopicDTO> topicOptional = topicService.findTopicByTitle(title);
@@ -48,6 +51,7 @@ public class TopicController {
                         .build());
     }
 
+    @Operation(summary = "Get Topic by user email")
     @GetMapping("/user/{email}")
     public ResponseEntity<List<GetTopicDTO>> getTopicsByUserEmail(@PathVariable String email) {
         List<GetTopicDTO> topics = topicService.findTopicsByUserEmail(email);
@@ -59,6 +63,7 @@ public class TopicController {
         }
     }
 
+    @Operation(summary = "Get all topics ordered by title desc")
     @GetMapping("/all")
     public ResponseEntity<List<GetTopicDTO>> getAllTopicsOrderedByTitleDesc() {
         List<GetTopicDTO> topics = topicService.findAllTopicsOrderByTitleDesc();
@@ -69,6 +74,7 @@ public class TopicController {
         }
     }
 
+    @Operation(summary = "Create topic")
     @PostMapping
     public ResponseEntity<Topic> createTopic(@RequestBody SimplifiedTopicDTO simplifiedTopicDTO) {
         Topic topic = topicService.createTopic(simplifiedTopicDTO);
@@ -81,6 +87,7 @@ public class TopicController {
         }
     }
 
+    @Operation(summary = "Delete topic")
     @DeleteMapping("/{title}")
     public ResponseEntity<Void> deleteTopicByTitle(@PathVariable String title) {
         topicService.deleteTopicByTitle(title);

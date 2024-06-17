@@ -1,7 +1,7 @@
 package md.forum.forum.dto.mappers;
 
 import md.forum.forum.dto.get.GetPostDTO;
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.models.Post;
 import md.forum.forum.models.Topic;
 import md.forum.forum.models.User;
@@ -24,7 +24,7 @@ class PostDTOMapperTest implements WithAssertions {
     @Mock
     Topic topic;
     @Mock
-    UserDTO userDTO;
+    GetUserDTO userDTO;
     @Test
     void testShouldMapToPostDTO() {
         Post post = new Post(23, "23", "title", "content", "url", 42, date, date, user, topic);

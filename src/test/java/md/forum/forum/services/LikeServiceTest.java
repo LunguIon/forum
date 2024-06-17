@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -28,6 +29,7 @@ public class LikeServiceTest implements WithAssertions {
     static final Long POST_ID = 2L;
     static final Long COMM_ID = 1L;
     static final String LIKE_ID = "12";
+    public static final int COUNT = 12;
     @Mock
     Like like;
     @Mock
@@ -272,5 +274,23 @@ public class LikeServiceTest implements WithAssertions {
         doNothing().when(likeRepository).deleteByLikeId(LIKE_ID);
         likeService.deleteLike(LIKE_ID);
         verify(likeRepository).deleteByLikeId(LIKE_ID);
+    }
+
+    @Test
+    void testCountAllByPost() {
+        when(postRepository.findPostByPostId(LIKE_ID)).thenReturn(Optional.of(post));
+        when(likeRepository.countAllByPost(post)).thenReturn(COUNT);
+
+        assertThat(likeService.countAllByPost(LIKE_ID))
+                .isEqualTo(COUNT);
+
+        verify(likeRepository).countAllByPost(post);
+        verify(postRepository).findPostByPostId(LIKE_ID);
+    }
+
+    @Test
+    void testCountAllByPost_Null() {
+        assertThatThrownBy(() -> likeService.countAllByPost(null))
+                .isInstanceOf(NoSuchElementException.class);
     }
 }
