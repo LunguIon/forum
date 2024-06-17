@@ -1,7 +1,7 @@
 package md.forum.forum.dto.mappers;
 
 import md.forum.forum.dto.get.GetCommentDTO;
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.models.Comment;
 import md.forum.forum.models.Post;
 import md.forum.forum.models.User;
@@ -25,7 +25,7 @@ public class CommentDTOMapperTest implements WithAssertions {
     @Mock
     Post post;
     @Mock
-    UserDTO userDTO;
+    GetUserDTO userDTO;
 
     @Test
     void testShouldMapToCommentDTO() {

@@ -1,7 +1,7 @@
 package md.forum.forum.dto.mappers;
 
-import md.forum.forum.dto.get.TopicDTO;
-import md.forum.forum.dto.get.UserDTO;
+import md.forum.forum.dto.get.GetTopicDTO;
+import md.forum.forum.dto.get.GetUserDTO;
 import md.forum.forum.models.Topic;
 import md.forum.forum.models.User;
 import org.assertj.core.api.WithAssertions;
@@ -18,17 +18,17 @@ public class TopicDTOMapperTest implements WithAssertions {
     @Mock
     User user;
     @Mock
-    UserDTO userDTO;
+    GetUserDTO userDTO;
 
     @Test
     void testShouldMapToTopicDTO() {
         Topic topic = new Topic(1, "Title", "Content", "IMg", user);
 
         assertThat(dtoMapper.apply(topic))
-                .returns(topic.getTitle(), TopicDTO::title)
-                .returns(topic.getContent(), TopicDTO::content)
-                .returns(topic.getImageURL(), TopicDTO::imageUrl)
-                .returns(userDTO, TopicDTO::user);
+                .returns(topic.getTitle(), GetTopicDTO::title)
+                .returns(topic.getContent(), GetTopicDTO::content)
+                .returns(topic.getImageURL(), GetTopicDTO::imageUrl)
+                .returns(userDTO, GetTopicDTO::user);
     }
 
     @Test
